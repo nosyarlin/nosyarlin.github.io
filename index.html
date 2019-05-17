@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rayson Lim</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="description" content="I am a software developer and here is my portfolio">
+    <meta name="author" content="Rayson Lim">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="portfolio.css">
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+
+</head>
+<body>
+
+    <!-- Nav bar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <span class="navbar-brand">Rayson Lim</span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" name="profile">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" name="projects">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" name="contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div>
+        <img id="splash"
+             src="imgs/webp/header.webp"
+             onerror="this.onerror=null; this.src='imgs/header.png';"
+             alt="Software Development"></img>
+        <img id="profile"
+             src="imgs/webp/profile.webp"
+             onerror="this.onerror=null; this.src='imgs/profile.png';"
+             alt="Rayson Lim Jun Kai">
+    </div>
+
+    <!-- Profile -->
+    <section>
+        <div class="container">
+            <h2 class="title">Backend Developer <span class="divider">|</span> 
+                Android Developer <span class="divider">|</span> 
+                Data Scientist</h2>
+            <p>Hello! My name is Rayson and I am a software engineer from Singapore. I am currently pursuing a software related degree and I will be graduating from Singapore University of Technology and Design (SUTD) in September 2019. I picked up programming on my own when I was 18 and since then, I have worked on several software projects both in school and at internships. I focus mainly on backend development but I am also familiar with mobile development, data science and machine learning. I love building things with code :)
+            </p>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+        <div class="container">
+            <h2 class="title">PROJECTS</h2>
+            <div class="row">
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img src="imgs/webp/jublia.webp" 
+                             onerror="this.onerror=null; this.src='imgs/jublia.png';"
+                             class="card-img-top img-contained"
+                             alt="Jublia">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <h5 class="card-title">Jublia Email Scheduler Tool</h5>
+                            <p class="card-text">Built a tool using Celery and Flask for the customer success team to schedule emails to be sent in the future.</p>
+                            <div class="mt-auto">
+                                <span class="badge badge-primary">Python</span>
+                                <span class="badge badge-primary">Flask</span>
+                                <span class="badge badge-primary">Celery</span>
+                                <span class="badge badge-primary">MySQL</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img src="imgs/webp/se7en.webp" 
+                             onerror="this.onerror=null; this.src='imgs/se7en.jpg';"
+                             class="card-img-top"
+                             alt="Timetable Scheduler">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <h5 class="card-title">Timetable Scheduler</h5>
+                            <p class="card-text">Designed and implemented a web application that generates school timetables using a genetic algorithm that takes into account resource availability constraints.</p>
+                            <div class="d-flex mt-auto w-100">
+                                <div class="mt-auto">
+                                    <span class="badge badge-primary">NodeJS</span>
+                                    <span class="badge badge-primary">Python</span>
+                                    <span class="badge badge-primary">MySQL</span>
+                                </div>
+                                <button id="schedulerBtn" type="button" class="btn btn-outline-secondary btn-sm ml-auto">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img src="imgs/webp/language.webp"
+                             onerror="this.onerror=null; this.src='imgs/language.jpg';"
+                             class="card-img-top"
+                             alt="Natural Language Processing">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <h5 class="card-title">Part-of-Speech Tagging</h5>
+                            <p class="card-text">Implemented Perceptron and Hidden Markov Models to perform part-of-speech tagging on tweets</p>
+                            <div class="d-flex mt-auto w-100">
+                                <div class="mt-auto">
+                                    <span class="badge badge-primary">Machine Learning</span>
+                                    <span class="badge badge-primary">Python</span>
+                                </div>
+                                <button id="mlBtn" type="button" class="btn btn-outline-secondary btn-sm ml-auto">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img src="imgs/webp/makingmaps.webp"
+                             onerror="this.onerror=null; this.src='imgs/makingmaps.png';"
+                             class="card-img-top"
+                             alt="Making Maps">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <h5 class="card-title">Happiness Map of Singapore</h5>
+                            <p class="card-text">Conducted a study on where the happier people in Singapore are based on the emojis they use in tweets and instagram posts. People staying in private estates turned out to be happier. </p>
+                            <div class="d-flex mt-auto w-100">
+                                <div class="mt-auto">
+                                    <span class="badge badge-primary">R</span>
+                                    <span class="badge badge-primary">Shiny</span>
+                                    <span class="badge badge-primary">Plotly</span>
+                                </div>
+                                <button id="mapsBtn" type="button" class="btn btn-outline-secondary btn-sm ml-auto">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img src="imgs/webp/virk.webp"
+                             onerror="this.onerror=null; this.src='imgs/virk.jpg';"
+                             class="card-img-top img-contained"
+                             alt="Voting System">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <h5 class="card-title">ISTD Showcase Voting System</h5>
+                            <p class="card-text">The ISTD department in SUTD showcases student projects every year. We built a voting system where students and professors can vote for their favourite projects using their student/employee card</p>
+                            <div class="d-flex mt-auto w-100">
+                                <div class="mt-auto">
+                                    <span class="badge badge-primary">PHP</span>
+                                    <span class="badge badge-primary">MySQL</span>
+                                    <span class="badge badge-primary">Android</span>
+                                </div>
+                                <button id="virkBtn" type="button" class="btn btn-outline-secondary btn-sm ml-auto">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img src="imgs/webp/data.webp"
+                             onerror="this.onerror=null; this.src='imgs/data.jpg';"
+                             class="card-img-top"
+                             alt="Data Science">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <h5 class="card-title">Cyber Attack Detection</h5>
+                            <p class="card-text">I made a statistical model to detect cyber attacks in a water distribution system that relies on computers, sensors and actuators.</p>
+                            <div class="d-flex mt-auto w-100">
+                                <div class="mt-auto">
+                                    <span class="badge badge-primary">R</span>
+                                    <span class="badge badge-primary">Python</span>
+                                    <span class="badge badge-primary">Data Science</span>
+                                </div>
+                                <button id="cyberBtn" type="button" class="btn btn-outline-secondary btn-sm ml-auto">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="footer">
+        <div class="container">
+            <h1 class="title">Let's work together.</h1>
+            <div class="links text-center align-items-end">
+                <a href="https://github.com/nosyarlin">
+                    <i class="fab fa-github-square"></i>
+                </a>
+                <a href="https://www.facebook.com/rayson.limjunkai">
+                    <i class="fab fa-facebook-square"></i>    
+                </a>
+                <a href="https://www.linkedin.com/in/rayson-lim/">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <br>
+                <p>rayson.ljk@gmail.com<br>© <span id="year">2019</span> Rayson Lim</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="    sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+    <!-- Custom JS -->
+    <script type="text/javascript" src="portfolio.js"></script>
+</body>
+</html>

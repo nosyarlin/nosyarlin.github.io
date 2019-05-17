@@ -1,0 +1,129 @@
+body {
+    font-family: "Montserrat", "Avenir";
+}
+
+section {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+nav ul li a,
+nav ul li a:after,
+nav ul li a:before {
+    transition: all .3s;
+}
+
+nav ul li a {
+    position: relative;
+}
+
+nav ul li a:after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 0%;
+    content: '';
+    background: #A00000;
+    height: 4px;
+}
+
+nav ul li a:hover:after {
+    width: 100%;
+}
+
+.navbar {
+    text-transform: uppercase;
+    font-weight: 100;
+    font-size: 1.25rem;
+    letter-spacing: 2px;
+    color: white;
+    transition: 0.3s;
+}
+
+.navbar .nav-link {
+    color: white;
+    cursor: pointer;
+}
+
+.navbar-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1.0)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.divider {
+    color: #A00000;
+}
+
+.scrolled {
+    background-color: rgba(51, 51, 51, 1);
+}
+
+.title {
+    text-align: center;
+    padding: 2rem;
+    margin-bottom: 0;
+}
+
+.subtitle {
+    text-transform: uppercase;
+    font-weight: 100;
+    letter-spacing: 2px;
+    color: grey;
+    margin-bottom: 1rem;
+}
+
+.links a {
+    color: white;
+}
+
+.links a:hover {
+    color: grey;
+    text-decoration: none;
+}
+
+.fab {
+    font-size: 2rem;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 30vh;
+    object-fit: cover;
+    object-position: center;
+}
+
+.img-contained {
+    object-fit: contain;
+}
+
+.badge-primary {
+    background-color: white;
+    color: grey;
+    font-weight: 100;
+}
+
+#splash {
+    display: block;
+    object-fit: cover;
+    width: 100vw;
+    height: 350px;
+}
+
+#profile {
+    display: block;
+    height: 200px;
+    margin-top: -100px;
+    margin-bottom: -20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#projects {
+    background-color: #f0f0f0;
+}
+
+#footer {
+    color: white;
+    background-color: #333333;
+}
