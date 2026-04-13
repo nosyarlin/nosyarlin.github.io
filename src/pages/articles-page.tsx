@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { Search, X } from "lucide-react";
+import { SearchInput } from "@/components/ui/search-input";
 import { TextBody, TextEyebrow, TextHeading } from "@/components/ui/text";
 import { ArticleCard } from "@/components/ui/article-card";
-import { useArticleSearch } from "@/context/article-search-context";
 import { POST_MANIFEST } from "@/data/post-manifest";
 import type { PostMeta } from "@/types/post";
 
@@ -30,21 +31,68 @@ function postSearchBlob(post: PostMeta): string {
 }
 
 export function ArticlesPage() {
-  const { query } = useArticleSearch();
-  const [debouncedQuery, setDebouncedQuery] = useState(query);
+  const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [tagInput, setTagInput] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [writtenAfter, setWrittenAfter] = useState("");
+  const [writtenBefore, setWrittenBefore] = useState("");
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedQuery(query), 180);
     return () => window.clearTimeout(timer);
   }, [query]);
 
+  const allTags = useMemo(() => {
+    const unique = new Set<string>();
+    for (const post of POST_MANIFEST) {
+      for (const tag of post.tags) unique.add(tag);
+    }
+    return [...unique].sort((a, b) => a.localeCompare(b));
+  }, []);
+
+  const tagSuggestions = useMemo(() => {
+    const needle = tagInput.trim().toLowerCase();
+    return allTags
+      .filter((tag) => !selectedTags.includes(tag))
+      .filter((tag) => !needle || tag.toLowerCase().includes(needle))
+      .slice(0, 8);
+  }, [allTags, selectedTags, tagInput]);
+
   const normalizedQuery = debouncedQuery.trim().toLowerCase();
   const filteredPosts = useMemo(() => {
-    if (!normalizedQuery) return POST_MANIFEST;
-    return POST_MANIFEST.filter((post) =>
-      postSearchBlob(post).includes(normalizedQuery),
-    );
-  }, [normalizedQuery]);
+    return POST_MANIFEST.filter((post) => {
+      if (normalizedQuery && !postSearchBlob(post).includes(normalizedQuery)) {
+        return false;
+      }
+
+      if (selectedTags.length > 0) {
+        const hasAllTags = selectedTags.every((tag) => post.tags.includes(tag));
+        if (!hasAllTags) return false;
+      }
+
+      if (writtenAfter && post.date < writtenAfter) {
+        return false;
+      }
+
+      if (writtenBefore && post.date > writtenBefore) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [normalizedQuery, selectedTags, writtenAfter, writtenBefore]);
+
+  function addTag(tag: string) {
+    if (!selectedTags.includes(tag)) {
+      setSelectedTags((prev) => [...prev, tag]);
+    }
+    setTagInput("");
+  }
+
+  function removeTag(tag: string) {
+    setSelectedTags((prev) => prev.filter((t) => t !== tag));
+  }
 
   return (
     <div className="p-6 md:p-10">
@@ -53,8 +101,78 @@ export function ArticlesPage() {
         All posts
       </TextHeading>
       <TextBody className="mt-3 max-w-prose">
-        Search filters metadata only: title, excerpt, tags, and dates.
+        Filters apply to metadata only: title, excerpt, tags, and dates.
       </TextBody>
+
+      <div className="mt-6 grid gap-3 rounded-md border border-neutral-200 bg-white p-4 shadow-soft dark:border-neutral-700 dark:bg-neutral-800 md:grid-cols-2 xl:grid-cols-4">
+        <SearchInput
+          leftIcon={<Search className="h-4 w-4" aria-hidden />}
+          placeholder="Search articles"
+          aria-label="Search articles"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="md:col-span-2 xl:col-span-1"
+        />
+
+        <div className="relative md:col-span-2 xl:col-span-1">
+          <SearchInput
+            placeholder="Filter by tag"
+            aria-label="Filter by tag"
+            value={tagInput}
+            onChange={(e) => setTagInput(e.target.value)}
+          />
+          {tagSuggestions.length > 0 ? (
+            <div className="absolute z-10 mt-1 max-h-48 w-full overflow-auto rounded-md border border-neutral-200 bg-white p-1 shadow-soft dark:border-neutral-700 dark:bg-neutral-800">
+              {tagSuggestions.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  className="block w-full rounded-md px-2 py-1.5 text-left text-sm text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
+                  onClick={() => addTag(tag)}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </div>
+
+        <label className="flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+          Written After
+          <input
+            type="date"
+            value={writtenAfter}
+            onChange={(e) => setWrittenAfter(e.target.value)}
+            className="rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 outline-none focus-visible:ring-2 focus-visible:ring-primary dark:border-neutral-600 dark:bg-neutral-700 dark:text-neutral-100"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+          Written Before
+          <input
+            type="date"
+            value={writtenBefore}
+            onChange={(e) => setWrittenBefore(e.target.value)}
+            className="rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 outline-none focus-visible:ring-2 focus-visible:ring-primary dark:border-neutral-600 dark:bg-neutral-700 dark:text-neutral-100"
+          />
+        </label>
+      </div>
+
+      {selectedTags.length > 0 ? (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {selectedTags.map((tag) => (
+            <button
+              key={tag}
+              type="button"
+              onClick={() => removeTag(tag)}
+              className="inline-flex items-center gap-1 rounded-md border border-primary-200 bg-primary-50 px-2 py-1 text-xs font-medium text-primary dark:border-primary-700 dark:bg-primary-900/30 dark:text-primary-200"
+            >
+              {tag}
+              <X className="h-3.5 w-3.5" aria-hidden />
+            </button>
+          ))}
+        </div>
+      ) : null}
 
       <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">
         {normalizedQuery
