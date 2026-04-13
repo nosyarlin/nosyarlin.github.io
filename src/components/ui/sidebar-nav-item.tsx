@@ -33,8 +33,8 @@ export function SidebarNavItem({
         minimal ? "gap-2.5 text-xs uppercase tracking-[0.12em]" : "gap-3 text-sm",
         minimal
           ? active
-            ? "text-primary dark:text-primary-200"
-            : "text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+            ? "bg-white font-semibold text-primary shadow-sm dark:bg-neutral-700 dark:text-primary-200"
+            : "font-normal text-neutral-500 hover:bg-white/70 hover:text-neutral-800 dark:text-neutral-500 dark:hover:bg-neutral-700/50 dark:hover:text-neutral-100"
           : active
             ? "bg-white text-primary shadow-sm dark:bg-neutral-700 dark:text-primary-200"
             : "text-neutral-600 hover:bg-white/70 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-700/70 dark:hover:text-neutral-100",
@@ -45,7 +45,9 @@ export function SidebarNavItem({
           <span
             className={cn(
               "shrink-0 [&_svg]:h-4 [&_svg]:w-4",
-              active ? "text-primary dark:text-primary-200" : "text-neutral-400 dark:text-neutral-500",
+              active
+                ? "text-primary dark:text-primary-200"
+                : "text-neutral-500 dark:text-neutral-500",
             )}
             aria-hidden
           >

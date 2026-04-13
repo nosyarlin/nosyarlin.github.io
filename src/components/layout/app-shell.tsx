@@ -11,6 +11,7 @@ import {
   User,
   X,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { SidebarNavItem } from "@/components/ui/sidebar-nav-item";
 import { SearchInput } from "@/components/ui/search-input";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -117,9 +118,10 @@ function TopBar({
         )}
       </button>
 
-      <button
+      <Button
         type="button"
-        className={cn(topIconBtn, "hidden md:inline-flex")}
+        variant="ghost"
+        className="hidden h-11 w-11 shrink-0 p-0 md:inline-flex"
         aria-label={desktopSidebarOpen ? "Hide sidebar" : "Show sidebar"}
         aria-pressed={desktopSidebarOpen}
         onClick={onToggleDesktopSidebar}
@@ -129,7 +131,7 @@ function TopBar({
         ) : (
           <PanelLeftOpen className="h-5 w-5" aria-hidden />
         )}
-      </button>
+      </Button>
 
       <Brand className="pr-1" />
 
