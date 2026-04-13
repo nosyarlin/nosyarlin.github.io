@@ -3,9 +3,9 @@ import { TagPill } from "@/components/ui/tag-pill";
 import { cn } from "@/lib/cn";
 import type { PostMeta } from "@/types/post";
 
-/** Links: full primary in light mode, softer blue in dark for contrast on panels. */
+/** Links: full primary in light mode; dark uses primary-400 with primary-300 on hover. */
 const linkAccent =
-  "text-primary hover:text-primary-600 dark:text-primary-200 dark:hover:text-primary-100";
+  "text-primary hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300";
 
 export type ArticleCardProps = {
   post: PostMeta;
