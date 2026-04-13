@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { CalendarDays, Search, X } from "lucide-react";
+import DatePicker from "react-datepicker";
+import { endOfDay, isValid, parseISO, startOfDay } from "date-fns";
+import "react-datepicker/dist/react-datepicker.css";
 import { SearchInput } from "@/components/ui/search-input";
 import { TextBody, TextEyebrow, TextHeading } from "@/components/ui/text";
 import { ArticleCard } from "@/components/ui/article-card";
@@ -35,8 +38,8 @@ export function ArticlesPage() {
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [tagInput, setTagInput] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [writtenAfter, setWrittenAfter] = useState("");
-  const [writtenBefore, setWrittenBefore] = useState("");
+  const [writtenAfter, setWrittenAfter] = useState<Date | null>(null);
+  const [writtenBefore, setWrittenBefore] = useState<Date | null>(null);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedQuery(query), 180);
@@ -71,11 +74,14 @@ export function ArticlesPage() {
         if (!hasAllTags) return false;
       }
 
-      if (writtenAfter && post.date < writtenAfter) {
+      const parsedPostDate = parseISO(post.date);
+      if (!isValid(parsedPostDate)) return false;
+
+      if (writtenAfter && parsedPostDate < startOfDay(writtenAfter)) {
         return false;
       }
 
-      if (writtenBefore && post.date > writtenBefore) {
+      if (writtenBefore && parsedPostDate > endOfDay(writtenBefore)) {
         return false;
       }
 
@@ -106,7 +112,7 @@ export function ArticlesPage() {
         </TextBody>
 
         <div className="mt-6 rounded-md border border-neutral-200 bg-white p-4 shadow-soft dark:border-neutral-700 dark:bg-neutral-800">
-          <div className="grid gap-3 md:grid-cols-2">
+          <div className="grid gap-3">
             <label className="flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
               Search
               <SearchInput
@@ -118,7 +124,9 @@ export function ArticlesPage() {
                 className="h-10 py-0"
               />
             </label>
+          </div>
 
+          <div className="mt-3 grid gap-3">
             <label className="relative flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
               Tags
               <SearchInput
@@ -150,11 +158,14 @@ export function ArticlesPage() {
               Written After
               <div className="notion-date-wrap">
                 <CalendarDays className="notion-date-icon" aria-hidden />
-                <input
-                  type="date"
-                  value={writtenAfter}
-                  onChange={(e) => setWrittenAfter(e.target.value)}
-                  aria-label="Written after date"
+                <DatePicker
+                  selected={writtenAfter}
+                  onChange={(date: Date | null) => setWrittenAfter(date)}
+                  placeholderText="Select start date"
+                  dateFormat="dd MMM yyyy"
+                  isClearable
+                  popperClassName="notion-datepicker-popper"
+                  calendarClassName="notion-datepicker-calendar"
                   className="notion-date-input"
                 />
               </div>
@@ -164,11 +175,14 @@ export function ArticlesPage() {
               Written Before
               <div className="notion-date-wrap">
                 <CalendarDays className="notion-date-icon" aria-hidden />
-                <input
-                  type="date"
-                  value={writtenBefore}
-                  onChange={(e) => setWrittenBefore(e.target.value)}
-                  aria-label="Written before date"
+                <DatePicker
+                  selected={writtenBefore}
+                  onChange={(date: Date | null) => setWrittenBefore(date)}
+                  placeholderText="Select end date"
+                  dateFormat="dd MMM yyyy"
+                  isClearable
+                  popperClassName="notion-datepicker-popper"
+                  calendarClassName="notion-datepicker-calendar"
                   className="notion-date-input"
                 />
               </div>

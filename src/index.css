@@ -22,18 +22,47 @@
     -webkit-appearance: none;
   }
 
-  .notion-date-input::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-    opacity: 0.85;
-    filter: grayscale(1) contrast(0.85);
+  .notion-date-input::placeholder {
+    @apply text-neutral-400 dark:text-neutral-500;
   }
 
-  .notion-date-input:hover::-webkit-calendar-picker-indicator {
-    opacity: 1;
-    filter: grayscale(0.7) contrast(1);
+  .notion-datepicker-popper {
+    z-index: 30;
   }
 
-  .notion-date-input::-webkit-date-and-time-value {
-    text-align: left;
+  .notion-datepicker-calendar.react-datepicker {
+    @apply overflow-hidden rounded-md border border-neutral-200 bg-white text-neutral-800 shadow-soft dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .notion-datepicker-calendar .react-datepicker__header {
+    @apply border-b border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-900;
+  }
+
+  .notion-datepicker-calendar .react-datepicker__current-month,
+  .notion-datepicker-calendar .react-datepicker-time__header,
+  .notion-datepicker-calendar .react-datepicker-year-header {
+    @apply text-sm font-semibold text-neutral-700 dark:text-neutral-200;
+  }
+
+  .notion-datepicker-calendar .react-datepicker__day-name {
+    @apply text-xs text-neutral-500 dark:text-neutral-400;
+  }
+
+  .notion-datepicker-calendar .react-datepicker__day {
+    @apply text-sm text-neutral-700 dark:text-neutral-200;
+  }
+
+  .notion-datepicker-calendar .react-datepicker__day:hover {
+    @apply rounded-md bg-neutral-100 dark:bg-neutral-700;
+  }
+
+  .notion-datepicker-calendar .react-datepicker__day--selected,
+  .notion-datepicker-calendar .react-datepicker__day--keyboard-selected {
+    @apply rounded-md bg-primary text-white;
+  }
+
+  .notion-datepicker-calendar .react-datepicker__navigation-icon::before {
+    @apply border-neutral-500 dark:border-neutral-300;
   }
 }
