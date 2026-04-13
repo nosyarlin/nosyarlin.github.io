@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Search, X } from "lucide-react";
+import { CalendarDays, Search, X } from "lucide-react";
 import { SearchInput } from "@/components/ui/search-input";
 import { TextBody, TextEyebrow, TextHeading } from "@/components/ui/text";
 import { ArticleCard } from "@/components/ui/article-card";
@@ -139,22 +139,34 @@ export function ArticlesPage() {
 
         <label className="flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
           Written After
-          <input
-            type="date"
-            value={writtenAfter}
-            onChange={(e) => setWrittenAfter(e.target.value)}
-            className="rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 outline-none focus-visible:ring-2 focus-visible:ring-primary dark:border-neutral-600 dark:bg-neutral-700 dark:text-neutral-100"
-          />
+          <div className="relative">
+            <CalendarDays
+              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400 dark:text-neutral-500"
+              aria-hidden
+            />
+            <input
+              type="date"
+              value={writtenAfter}
+              onChange={(e) => setWrittenAfter(e.target.value)}
+              className="notion-date-input w-full"
+            />
+          </div>
         </label>
 
         <label className="flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
           Written Before
-          <input
-            type="date"
-            value={writtenBefore}
-            onChange={(e) => setWrittenBefore(e.target.value)}
-            className="rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 outline-none focus-visible:ring-2 focus-visible:ring-primary dark:border-neutral-600 dark:bg-neutral-700 dark:text-neutral-100"
-          />
+          <div className="relative">
+            <CalendarDays
+              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400 dark:text-neutral-500"
+              aria-hidden
+            />
+            <input
+              type="date"
+              value={writtenBefore}
+              onChange={(e) => setWrittenBefore(e.target.value)}
+              className="notion-date-input w-full"
+            />
+          </div>
         </label>
       </div>
 
