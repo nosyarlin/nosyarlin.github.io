@@ -8,61 +8,11 @@
 @tailwind utilities;
 
 @layer components {
-  .notion-date-wrap {
-    @apply relative flex h-10 items-center rounded-md border border-neutral-300 bg-neutral-100/80 px-3 transition focus-within:border-primary-300 focus-within:bg-white focus-within:ring-2 focus-within:ring-primary/40 dark:border-neutral-600 dark:bg-neutral-800 dark:focus:border-primary-500 dark:focus:bg-neutral-700;
-  }
-
-  .notion-date-icon {
-    @apply pointer-events-none mr-2 h-4 w-4 shrink-0 text-neutral-400 dark:text-neutral-500;
-  }
-
   .notion-date-input {
-    @apply h-full w-full border-none bg-transparent p-0 text-sm text-neutral-900 outline-none shadow-none ring-0 dark:text-neutral-100;
-    appearance: none;
-    -webkit-appearance: none;
+    @apply h-10 w-full rounded-md border border-neutral-300 bg-neutral-100/80 px-3 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-primary-300 focus:bg-white focus:ring-2 focus:ring-primary/40 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-primary-500 dark:focus:bg-neutral-700;
   }
 
-  .notion-date-input::placeholder {
-    @apply text-neutral-400 dark:text-neutral-500;
-  }
-
-  .notion-datepicker-popper {
-    z-index: 30;
-  }
-
-  .notion-datepicker-calendar.react-datepicker {
-    @apply overflow-hidden rounded-md border border-neutral-200 bg-white text-neutral-800 shadow-soft dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100;
-    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-  }
-
-  .notion-datepicker-calendar .react-datepicker__header {
-    @apply border-b border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-900;
-  }
-
-  .notion-datepicker-calendar .react-datepicker__current-month,
-  .notion-datepicker-calendar .react-datepicker-time__header,
-  .notion-datepicker-calendar .react-datepicker-year-header {
-    @apply text-sm font-semibold text-neutral-700 dark:text-neutral-200;
-  }
-
-  .notion-datepicker-calendar .react-datepicker__day-name {
-    @apply text-xs text-neutral-500 dark:text-neutral-400;
-  }
-
-  .notion-datepicker-calendar .react-datepicker__day {
-    @apply text-sm text-neutral-700 dark:text-neutral-200;
-  }
-
-  .notion-datepicker-calendar .react-datepicker__day:hover {
-    @apply rounded-md bg-neutral-100 dark:bg-neutral-700;
-  }
-
-  .notion-datepicker-calendar .react-datepicker__day--selected,
-  .notion-datepicker-calendar .react-datepicker__day--keyboard-selected {
-    @apply rounded-md bg-primary text-white;
-  }
-
-  .notion-datepicker-calendar .react-datepicker__navigation-icon::before {
-    @apply border-neutral-500 dark:border-neutral-300;
+  .rtdp .calendar {
+    @apply rounded-md border border-neutral-200 bg-white shadow-soft dark:border-neutral-700 dark:bg-neutral-800;
   }
 }

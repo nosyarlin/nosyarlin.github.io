@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { CalendarDays, Search, X } from "lucide-react";
-import DatePicker from "react-datepicker";
+import { Search, X } from "lucide-react";
+import Datepicker, { type DateValueType } from "react-tailwindcss-datepicker";
 import { endOfDay, isValid, parseISO, startOfDay } from "date-fns";
-import "react-datepicker/dist/react-datepicker.css";
 import { SearchInput } from "@/components/ui/search-input";
 import { TextBody, TextEyebrow, TextHeading } from "@/components/ui/text";
 import { ArticleCard } from "@/components/ui/article-card";
@@ -38,8 +37,14 @@ export function ArticlesPage() {
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [tagInput, setTagInput] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [writtenAfter, setWrittenAfter] = useState<Date | null>(null);
-  const [writtenBefore, setWrittenBefore] = useState<Date | null>(null);
+  const [writtenAfter, setWrittenAfter] = useState<DateValueType>({
+    startDate: null,
+    endDate: null,
+  });
+  const [writtenBefore, setWrittenBefore] = useState<DateValueType>({
+    startDate: null,
+    endDate: null,
+  });
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedQuery(query), 180);
@@ -62,8 +67,17 @@ export function ArticlesPage() {
       .slice(0, 8);
   }, [allTags, selectedTags, tagInput]);
 
+  function toValidDate(input: unknown): Date | null {
+    if (!input) return null;
+    const parsed = input instanceof Date ? input : new Date(String(input));
+    return isValid(parsed) ? parsed : null;
+  }
+
   const normalizedQuery = debouncedQuery.trim().toLowerCase();
   const filteredPosts = useMemo(() => {
+    const afterDate = toValidDate(writtenAfter?.startDate);
+    const beforeDate = toValidDate(writtenBefore?.startDate);
+
     return POST_MANIFEST.filter((post) => {
       if (normalizedQuery && !postSearchBlob(post).includes(normalizedQuery)) {
         return false;
@@ -77,11 +91,11 @@ export function ArticlesPage() {
       const parsedPostDate = parseISO(post.date);
       if (!isValid(parsedPostDate)) return false;
 
-      if (writtenAfter && parsedPostDate < startOfDay(writtenAfter)) {
+      if (afterDate && parsedPostDate < startOfDay(afterDate)) {
         return false;
       }
 
-      if (writtenBefore && parsedPostDate > endOfDay(writtenBefore)) {
+      if (beforeDate && parsedPostDate > endOfDay(beforeDate)) {
         return false;
       }
 
@@ -156,36 +170,36 @@ export function ArticlesPage() {
           <div className="mt-3 grid gap-3 md:grid-cols-2">
             <label className="flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
               Written After
-              <div className="notion-date-wrap">
-                <CalendarDays className="notion-date-icon" aria-hidden />
-                <DatePicker
-                  selected={writtenAfter}
-                  onChange={(date: Date | null) => setWrittenAfter(date)}
-                  placeholderText="Select start date"
-                  dateFormat="dd MMM yyyy"
-                  isClearable
-                  popperClassName="notion-datepicker-popper"
-                  calendarClassName="notion-datepicker-calendar"
-                  className="notion-date-input"
-                />
-              </div>
+              <Datepicker
+                asSingle
+                useRange={false}
+                value={writtenAfter}
+                onChange={setWrittenAfter}
+                placeholder="Select start date"
+                displayFormat="DD MMM YYYY"
+                inputClassName="notion-date-input"
+                containerClassName="w-full"
+                toggleClassName="absolute right-0 h-full px-3 text-neutral-400 dark:text-neutral-500"
+                popoverDirection="down"
+                primaryColor="blue"
+              />
             </label>
 
             <label className="flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
               Written Before
-              <div className="notion-date-wrap">
-                <CalendarDays className="notion-date-icon" aria-hidden />
-                <DatePicker
-                  selected={writtenBefore}
-                  onChange={(date: Date | null) => setWrittenBefore(date)}
-                  placeholderText="Select end date"
-                  dateFormat="dd MMM yyyy"
-                  isClearable
-                  popperClassName="notion-datepicker-popper"
-                  calendarClassName="notion-datepicker-calendar"
-                  className="notion-date-input"
-                />
-              </div>
+              <Datepicker
+                asSingle
+                useRange={false}
+                value={writtenBefore}
+                onChange={setWrittenBefore}
+                placeholder="Select end date"
+                displayFormat="DD MMM YYYY"
+                inputClassName="notion-date-input"
+                containerClassName="w-full"
+                toggleClassName="absolute right-0 h-full px-3 text-neutral-400 dark:text-neutral-500"
+                popoverDirection="down"
+                primaryColor="blue"
+              />
             </label>
           </div>
         </div>
