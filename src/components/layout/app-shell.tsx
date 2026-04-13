@@ -7,15 +7,12 @@ import {
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
-  Search,
   User,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarNavItem } from "@/components/ui/sidebar-nav-item";
-import { SearchInput } from "@/components/ui/search-input";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { ArticleSearchProvider, useArticleSearch } from "@/context/article-search-context";
 import { cn } from "@/lib/cn";
 
 function Brand({ onNavigate, className }: { onNavigate?: () => void; className?: string }) {
@@ -97,8 +94,6 @@ function TopBar({
   desktopSidebarOpen: boolean;
   onToggleDesktopSidebar: () => void;
 }) {
-  const { query, setQuery } = useArticleSearch();
-
   return (
     <header
       className="flex h-14 shrink-0 items-center gap-2 border-b border-neutral-200 bg-white px-3 dark:border-neutral-700 dark:bg-neutral-900 md:gap-3 md:px-4"
@@ -134,19 +129,7 @@ function TopBar({
       </Button>
 
       <Brand className="pr-1" />
-
-      <div className="flex min-h-0 min-w-0 flex-1 justify-end">
-        <div className="w-full max-w-md min-w-[8rem]">
-          <SearchInput
-            className="w-full py-2"
-            leftIcon={<Search className="h-4 w-4" aria-hidden />}
-            placeholder="Search articles…"
-            aria-label="Search articles"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
-      </div>
+      <div className="flex-1" />
 
       <ThemeToggle className="h-11 w-11 shrink-0" />
     </header>
@@ -259,9 +242,5 @@ function AppShellInner() {
 }
 
 export function AppShell() {
-  return (
-    <ArticleSearchProvider>
-      <AppShellInner />
-    </ArticleSearchProvider>
-  );
+  return <AppShellInner />;
 }
