@@ -2,9 +2,8 @@ import matter from "gray-matter";
 import type { ComponentType } from "react";
 import type { PostMeta } from "@/types/post";
 
-const rawPostModules = import.meta.glob<string>("../../content/posts/*.mdx", {
+const rawPostModules = import.meta.glob("../../content/posts/*.mdx", {
   eager: true,
-  import: "default",
   query: "?raw",
 });
 
@@ -60,18 +59,31 @@ function parseFrontmatter(raw: string, filePath: string): PostMeta | null {
   };
 }
 
-function collectMeta(): PostMeta[] {
+function toRawMdxSource(input: unknown): string | null {
+  if (typeof input === "string") return input;
+  if (
+    typeof input === "object" &&
+    input !== null &&
+    "default" in input &&
+    typeof (input as { default?: unknown }).default === "string"
+  ) {
+    return (input as { default: string }).default;
+  }
+  return null;
+}
+
+export function collectMetaFromModules(modules: Record<string, unknown>): PostMeta[] {
   const list: PostMeta[] = [];
-  for (const filePath of Object.keys(rawPostModules)) {
-    const raw = rawPostModules[filePath];
-    if (typeof raw !== "string") continue;
+  for (const filePath of Object.keys(modules)) {
+    const raw = toRawMdxSource(modules[filePath]);
+    if (!raw) continue;
     const meta = parseFrontmatter(raw, filePath);
     if (meta) list.push(meta);
   }
   return list;
 }
 
-const allParsed = collectMeta();
+const allParsed = collectMetaFromModules(rawPostModules);
 
 /** Every post with valid front matter (includes drafts). */
 export const ALL_POST_META: PostMeta[] = [...allParsed].sort((a, b) =>
