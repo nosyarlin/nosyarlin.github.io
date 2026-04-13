@@ -25,29 +25,6 @@ export function HomePage() {
   );
 }
 
-export function ArticlesPageStub() {
-  return (
-    <div className="p-6 md:p-10">
-      <TextEyebrow>Articles</TextEyebrow>
-      <TextHeading as="h1" className="mt-2">
-        All posts
-      </TextHeading>
-      <TextBody className="mt-3 max-w-prose text-neutral-600 dark:text-neutral-400">
-        Metadata comes from the MDX front matter manifest (RAY-36). Client-side search and polish
-        ship in RAY-37.
-      </TextBody>
-      <ul className="mt-6 max-w-prose space-y-2 text-sm">
-        {POST_MANIFEST.map((p) => (
-          <li key={p.slug} className="text-neutral-800 dark:text-neutral-200">
-            <span className="font-medium">{p.title}</span>
-            <span className="text-neutral-500 dark:text-neutral-400"> · {p.date}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 export function ProjectsPageStub() {
   return (
     <div className="p-6 md:p-10">

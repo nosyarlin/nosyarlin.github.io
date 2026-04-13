@@ -1,0 +1,83 @@
+import { useEffect, useMemo, useState } from "react";
+import { TextBody, TextEyebrow, TextHeading } from "@/components/ui/text";
+import { ArticleCard } from "@/components/ui/article-card";
+import { useArticleSearch } from "@/context/article-search-context";
+import { POST_MANIFEST } from "@/data/post-manifest";
+import type { PostMeta } from "@/types/post";
+
+function formatDateForSearch(date: string) {
+  const parsed = new Date(date);
+  if (Number.isNaN(parsed.getTime())) return date.toLowerCase();
+  return new Intl.DateTimeFormat("en", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  })
+    .format(parsed)
+    .toLowerCase();
+}
+
+function postSearchBlob(post: PostMeta): string {
+  return [
+    post.title,
+    post.excerpt,
+    post.tags.join(" "),
+    post.date,
+    formatDateForSearch(post.date),
+  ]
+    .join(" ")
+    .toLowerCase();
+}
+
+export function ArticlesPage() {
+  const { query } = useArticleSearch();
+  const [debouncedQuery, setDebouncedQuery] = useState(query);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedQuery(query), 180);
+    return () => window.clearTimeout(timer);
+  }, [query]);
+
+  const normalizedQuery = debouncedQuery.trim().toLowerCase();
+  const filteredPosts = useMemo(() => {
+    if (!normalizedQuery) return POST_MANIFEST;
+    return POST_MANIFEST.filter((post) =>
+      postSearchBlob(post).includes(normalizedQuery),
+    );
+  }, [normalizedQuery]);
+
+  return (
+    <div className="p-6 md:p-10">
+      <TextEyebrow>Articles</TextEyebrow>
+      <TextHeading as="h1" className="mt-2">
+        All posts
+      </TextHeading>
+      <TextBody className="mt-3 max-w-prose">
+        Search filters metadata only: title, excerpt, tags, and dates.
+      </TextBody>
+
+      <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">
+        {normalizedQuery
+          ? `${filteredPosts.length} match${filteredPosts.length === 1 ? "" : "es"} for "${debouncedQuery.trim()}"`
+          : `${POST_MANIFEST.length} post${POST_MANIFEST.length === 1 ? "" : "s"}`}
+      </p>
+
+      {filteredPosts.length === 0 ? (
+        <div className="mt-8 rounded-md border border-dashed border-neutral-300 bg-neutral-100/60 p-6 dark:border-neutral-700 dark:bg-neutral-900/60">
+          <p className="text-sm font-medium text-neutral-800 dark:text-neutral-200">
+            No articles match that search.
+          </p>
+          <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+            Try a different keyword from title, tags, excerpt, or date.
+          </p>
+        </div>
+      ) : (
+        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {filteredPosts.map((post) => (
+            <ArticleCard key={post.slug} post={post} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
