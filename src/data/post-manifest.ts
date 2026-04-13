@@ -1,4 +1,5 @@
 import matter from "gray-matter";
+import type { ComponentType } from "react";
 import type { PostMeta } from "@/types/post";
 
 const rawPostModules = import.meta.glob<string>("../../content/posts/*.mdx", {
@@ -6,6 +7,8 @@ const rawPostModules = import.meta.glob<string>("../../content/posts/*.mdx", {
   import: "default",
   query: "?raw",
 });
+
+const mdxPostModules = import.meta.glob("../../content/posts/*.mdx");
 
 function normalizeTags(tags: unknown): string[] {
   if (Array.isArray(tags)) return tags.map(String);
@@ -88,4 +91,15 @@ export function getPostManifest(): PostMeta[] {
 
 export function getPostBySlug(slug: string): PostMeta | undefined {
   return POST_MANIFEST.find((p) => p.slug === slug);
+}
+
+export async function loadPostComponentBySlug(
+  slug: string,
+): Promise<ComponentType | null> {
+  const moduleEntry = Object.entries(mdxPostModules).find(([path]) =>
+    path.endsWith(`/${slug}.mdx`),
+  );
+  if (!moduleEntry) return null;
+  const mod = (await moduleEntry[1]()) as { default?: ComponentType };
+  return mod.default ?? null;
 }
