@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Search, X } from "lucide-react";
+import { CalendarDays, Search, X } from "lucide-react";
 import { SearchInput } from "@/components/ui/search-input";
 import { TextBody, TextEyebrow, TextHeading } from "@/components/ui/text";
 import { ArticleCard } from "@/components/ui/article-card";
@@ -105,65 +105,75 @@ export function ArticlesPage() {
           Filters apply to metadata only: title, excerpt, tags, and dates.
         </TextBody>
 
-        <div className="mt-6 grid gap-3 rounded-md border border-neutral-200 bg-white p-4 shadow-soft dark:border-neutral-700 dark:bg-neutral-800 md:grid-cols-2 xl:grid-cols-4">
-          <label className="flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
-            Search
-            <SearchInput
-              leftIcon={<Search className="h-4 w-4" aria-hidden />}
-              placeholder="Search articles"
-              aria-label="Search articles"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="h-10 py-0"
-            />
-          </label>
+        <div className="mt-6 rounded-md border border-neutral-200 bg-white p-4 shadow-soft dark:border-neutral-700 dark:bg-neutral-800">
+          <div className="grid gap-3 md:grid-cols-2">
+            <label className="flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+              Search
+              <SearchInput
+                leftIcon={<Search className="h-4 w-4" aria-hidden />}
+                placeholder="Search articles"
+                aria-label="Search articles"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="h-10 py-0"
+              />
+            </label>
 
-          <label className="relative flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
-            Tags
-            <SearchInput
-              placeholder="Filter by tag"
-              aria-label="Filter by tag"
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-              className="h-10 py-0"
-            />
-            {tagSuggestions.length > 0 ? (
-              <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-48 overflow-auto rounded-md border border-neutral-200 bg-white p-1 shadow-soft dark:border-neutral-700 dark:bg-neutral-800">
-                {tagSuggestions.map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    className="block w-full rounded-md px-2 py-1.5 text-left text-sm normal-case tracking-normal text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
-                    onClick={() => addTag(tag)}
-                  >
-                    {tag}
-                  </button>
-                ))}
+            <label className="relative flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+              Tags
+              <SearchInput
+                placeholder="Filter by tag"
+                aria-label="Filter by tag"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                className="h-10 py-0"
+              />
+              {tagSuggestions.length > 0 ? (
+                <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-48 overflow-auto rounded-md border border-neutral-200 bg-white p-1 shadow-soft dark:border-neutral-700 dark:bg-neutral-800">
+                  {tagSuggestions.map((tag) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      className="block w-full rounded-md px-2 py-1.5 text-left text-sm normal-case tracking-normal text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
+                      onClick={() => addTag(tag)}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+            </label>
+          </div>
+
+          <div className="mt-3 grid gap-3 md:grid-cols-2">
+            <label className="flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+              Written After
+              <div className="notion-date-wrap">
+                <CalendarDays className="notion-date-icon" aria-hidden />
+                <input
+                  type="date"
+                  value={writtenAfter}
+                  onChange={(e) => setWrittenAfter(e.target.value)}
+                  aria-label="Written after date"
+                  className="notion-date-input"
+                />
               </div>
-            ) : null}
-          </label>
+            </label>
 
-          <label className="flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
-            Written After
-            <input
-              type="date"
-              value={writtenAfter}
-              onChange={(e) => setWrittenAfter(e.target.value)}
-              aria-label="Written after date"
-              className="notion-date-input w-full"
-            />
-          </label>
-
-          <label className="flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
-            Written Before
-            <input
-              type="date"
-              value={writtenBefore}
-              onChange={(e) => setWrittenBefore(e.target.value)}
-              aria-label="Written before date"
-              className="notion-date-input w-full"
-            />
-          </label>
+            <label className="flex flex-col gap-1 text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+              Written Before
+              <div className="notion-date-wrap">
+                <CalendarDays className="notion-date-icon" aria-hidden />
+                <input
+                  type="date"
+                  value={writtenBefore}
+                  onChange={(e) => setWrittenBefore(e.target.value)}
+                  aria-label="Written before date"
+                  className="notion-date-input"
+                />
+              </div>
+            </label>
+          </div>
         </div>
 
         {selectedTags.length > 0 ? (
