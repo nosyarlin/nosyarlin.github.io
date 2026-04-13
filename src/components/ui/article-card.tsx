@@ -3,6 +3,10 @@ import { TagPill } from "@/components/ui/tag-pill";
 import { cn } from "@/lib/cn";
 import type { PostMeta } from "@/types/post";
 
+/** Links: full primary in light mode, softer blue in dark for contrast on panels. */
+const linkAccent =
+  "text-primary hover:text-primary-600 dark:text-primary-200 dark:hover:text-primary-100";
+
 export type ArticleCardProps = {
   post: PostMeta;
   className?: string;
@@ -32,14 +36,14 @@ export function ArticleCard({
     return (
       <article
         className={cn(
-          "flex flex-col gap-4 overflow-hidden rounded-2xl border border-neutral-200/90 bg-white shadow-soft dark:border-neutral-800 dark:bg-neutral-900 md:flex-row",
+          "flex flex-col gap-4 overflow-hidden rounded-md border border-neutral-200/90 bg-white shadow-soft dark:border-neutral-700 dark:bg-neutral-800 md:flex-row",
           className,
         )}
       >
         {post.cover ? (
           <Link
             to={href}
-            className="relative aspect-[16/10] w-full shrink-0 bg-neutral-100 md:aspect-auto md:w-[min(40%,320px)] dark:bg-neutral-800"
+            className="relative aspect-[16/10] w-full shrink-0 bg-neutral-100 md:aspect-auto md:w-[min(40%,320px)] dark:bg-neutral-700"
           >
             <img
               src={post.cover}
@@ -56,7 +60,7 @@ export function ArticleCard({
             {formatDate(post.date)}
           </time>
           <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
-            <Link to={href} className="hover:text-primary">
+            <Link to={href} className={cn(linkAccent)}>
               {post.title}
             </Link>
           </h2>
@@ -68,10 +72,7 @@ export function ArticleCard({
               <TagPill key={t}>{t}</TagPill>
             ))}
           </div>
-          <Link
-            to={href}
-            className="text-sm font-medium text-primary hover:underline"
-          >
+          <Link to={href} className={cn("text-sm font-medium underline-offset-4 hover:underline", linkAccent)}>
             Read the entry
           </Link>
         </div>
@@ -82,7 +83,7 @@ export function ArticleCard({
   return (
     <article
       className={cn(
-        "rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-soft dark:border-neutral-800 dark:bg-neutral-900",
+        "rounded-md border border-neutral-200/90 bg-white p-5 shadow-soft dark:border-neutral-700 dark:bg-neutral-800",
         className,
       )}
     >
@@ -91,7 +92,7 @@ export function ArticleCard({
         {post.readMinutes != null ? ` · ${post.readMinutes} min read` : ""}
       </p>
       <h3 className="mt-2 text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
-        <Link to={href} className="hover:text-primary">
+        <Link to={href} className={cn(linkAccent)}>
           {post.title}
         </Link>
       </h3>
