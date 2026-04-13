@@ -13,9 +13,9 @@ export function Surface({
   return (
     <div
       className={cn(
-        "rounded-2xl border border-neutral-200/80 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900/80",
+        "rounded-md border border-neutral-200/80 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-800/90",
         variant === "muted" &&
-          "border-transparent bg-neutral-100/80 dark:bg-neutral-800/60",
+          "border-transparent bg-neutral-100/80 dark:bg-neutral-700/70",
         variant === "elevated" && "shadow-soft",
         className,
       )}

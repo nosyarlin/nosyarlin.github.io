@@ -13,7 +13,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     return (
       <div
         className={cn(
-          "flex items-center gap-2 rounded-xl border border-neutral-200 bg-surface-muted px-3 py-2 shadow-inner dark:border-neutral-700 dark:bg-neutral-800/80",
+          "flex items-center gap-2 rounded-md border border-neutral-200 bg-surface-muted px-3 py-2 shadow-inner dark:border-neutral-600 dark:bg-neutral-700/90",
           className,
         )}
       >

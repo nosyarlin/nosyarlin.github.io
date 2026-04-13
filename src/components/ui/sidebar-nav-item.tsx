@@ -25,19 +25,19 @@ export function SidebarNavItem({
       to={to}
       onClick={onNavigate}
       className={cn(
-        "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
+        "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
         active
-          ? "bg-white text-primary shadow-sm dark:bg-neutral-800 dark:text-primary"
-          : "text-neutral-600 hover:bg-white/70 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800/70 dark:hover:text-neutral-100",
+          ? "bg-white text-primary shadow-sm dark:bg-neutral-700 dark:text-primary-200"
+          : "text-neutral-600 hover:bg-white/70 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-700/70 dark:hover:text-neutral-100",
       )}
     >
       {icon ? (
         <span
           className={cn(
-            "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg",
+            "flex h-8 w-8 shrink-0 items-center justify-center rounded-md",
             active
               ? "bg-primary text-white"
-              : "bg-neutral-200/80 dark:bg-neutral-700",
+              : "bg-neutral-200/80 dark:bg-neutral-600",
           )}
         >
           {icon}
