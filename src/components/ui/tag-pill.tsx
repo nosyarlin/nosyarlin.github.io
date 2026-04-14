@@ -2,6 +2,13 @@ import { cn } from "@/lib/cn";
 
 export type TagPillVariant = "neutral" | "primary" | "secondary" | "tertiary";
 
+// Theme-backed accent choices for auto-colored tag pills.
+const THEME_TAG_VARIANTS: Exclude<TagPillVariant, "neutral">[] = [
+  "primary",
+  "secondary",
+  "tertiary",
+];
+
 const variantClass: Record<TagPillVariant, string> = {
   neutral:
     "bg-neutral-200/90 text-neutral-700 dark:bg-neutral-600/90 dark:text-neutral-100",
@@ -19,16 +26,36 @@ export type TagPillProps = {
   variant?: TagPillVariant;
 };
 
+function hashString(input: string): number {
+  let hash = 0;
+  for (let i = 0; i < input.length; i += 1) {
+    hash = (hash << 5) - hash + input.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function getAutoVariant(children: React.ReactNode): TagPillVariant {
+  if (typeof children !== "string" && typeof children !== "number") {
+    return "neutral";
+  }
+  const normalized = String(children).trim().toLowerCase();
+  if (!normalized) return "neutral";
+  const idx = hashString(normalized) % THEME_TAG_VARIANTS.length;
+  return THEME_TAG_VARIANTS[idx];
+}
+
 export function TagPill({
   children,
   className,
-  variant = "neutral",
+  variant,
 }: TagPillProps) {
+  const resolvedVariant = variant ?? getAutoVariant(children);
   return (
     <span
       className={cn(
         "inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium",
-        variantClass[variant],
+        variantClass[resolvedVariant],
         className,
       )}
     >
