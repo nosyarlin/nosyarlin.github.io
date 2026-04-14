@@ -65,20 +65,6 @@ export function HomePage() {
   );
 }
 
-export function ProjectsPageStub() {
-  return (
-    <div>
-      <TextEyebrow>Projects</TextEyebrow>
-      <TextHeading as="h1" className="mt-2">
-        Coming soon
-      </TextHeading>
-      <TextBody className="mt-3 max-w-prose text-neutral-600 dark:text-neutral-400">
-        Legacy portfolio cards migrate in RAY-40.
-      </TextBody>
-    </div>
-  );
-}
-
 export function AboutPageStub() {
   return (
     <div>
