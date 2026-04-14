@@ -4,7 +4,7 @@ import type { ComponentType } from "react";
 import { TagPill, TextBody, TextEyebrow, TextHeading } from "@/components/ui";
 import {
   getPostBySlug,
-  loadPostComponentBySlug,
+  findPostComponentBySlug,
 } from "@/data/post-manifest";
 
 function formatDate(iso: string) {
@@ -32,7 +32,7 @@ export function ArticleDetailPage() {
         return;
       }
       setLoading(true);
-      const module = await loadPostComponentBySlug(slug);
+      const module = findPostComponentBySlug(slug);
       if (!cancelled) {
         setPostBody(() => module);
         setLoading(false);

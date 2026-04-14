@@ -6,9 +6,25 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { playwright } from "@vitest/browser-playwright";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkMdxFrontmatter from "remark-mdx-frontmatter";
+
 const dirname = path.dirname(fileURLToPath(import.meta.url));
+
 export default defineConfig({
-  plugins: [mdx({ jsxImportSource: "react" }), react()],
+  plugins: [
+    {
+      ...mdx({
+        jsxImportSource: "react",
+        remarkPlugins: [
+          remarkFrontmatter,
+          [remarkMdxFrontmatter, { name: "matter" }],
+        ],
+      }),
+      enforce: "pre",
+    },
+    react(),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(dirname, "src"),

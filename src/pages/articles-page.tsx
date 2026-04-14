@@ -54,6 +54,7 @@ export function ArticlesPage() {
   }, []);
 
   const tagSuggestions = useMemo(() => {
+    if (tagInput.length === 0) return [];
     const needle = tagInput.trim().toLowerCase();
     return allTags
       .filter((tag) => !selectedTags.includes(tag))
