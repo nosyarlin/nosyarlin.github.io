@@ -11,8 +11,8 @@ export function HomePage() {
   const recent = sorted.filter((p) => p.slug !== featured?.slug).slice(0, 6);
 
   return (
-    <div className="p-6 md:p-10">
-      <div className="mx-auto w-full max-w-6xl">
+    <div className="flex min-h-[calc(100dvh-3.5rem)] flex-col p-6 md:p-10">
+      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col">
         <TextEyebrow>Home</TextEyebrow>
         <TextHeading as="h1" className="mt-2">
           Notes on building calm, useful software.
@@ -62,7 +62,7 @@ export function HomePage() {
           )}
         </section>
 
-        <footer className="mt-12 border-t border-neutral-200 pt-6 dark:border-neutral-700">
+        <footer className="mt-auto border-t border-neutral-200 pt-6 dark:border-neutral-700">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
             <a href="#" className="text-neutral-600 hover:text-primary dark:text-neutral-400 dark:hover:text-primary-200">
               Twitter
