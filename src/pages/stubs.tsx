@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArticleCard } from "@/components/ui/article-card";
-import { TextBody, TextEyebrow, TextHeading } from "@/components/ui/text";
+import { PageContainer, TextBody, TextEyebrow, TextHeading, TextMuted } from "@/components/ui";
 import { POST_MANIFEST } from "@/data/post-manifest";
 
 export function HomePage() {
@@ -11,7 +11,7 @@ export function HomePage() {
   const recent = sorted.filter((p) => p.slug !== featured?.slug).slice(0, 6);
 
   return (
-    <div className="mx-auto w-full max-w-6xl">
+    <PageContainer size="6xl">
       <TextEyebrow>Home</TextEyebrow>
       <TextHeading as="h1" className="mt-2">
         Notes on building calm, useful software.
@@ -40,9 +40,9 @@ export function HomePage() {
       <section className="mt-10">
         <div className="mb-4 flex items-center justify-between">
           <TextHeading as="h3">Recent entries</TextHeading>
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          <TextMuted>
             {sorted.length} published {sorted.length === 1 ? "post" : "posts"}
-          </p>
+          </TextMuted>
         </div>
 
         {recent.length > 0 ? (
@@ -52,15 +52,15 @@ export function HomePage() {
             ))}
           </div>
         ) : featured ? (
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          <TextMuted>
             Only one article is published right now.
-          </p>
+          </TextMuted>
         ) : (
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          <TextMuted>
             No published articles yet.
-          </p>
+          </TextMuted>
         )}
       </section>
-    </div>
+    </PageContainer>
   );
 }

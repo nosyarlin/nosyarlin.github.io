@@ -3,7 +3,7 @@ import { Search, X } from "lucide-react";
 import Datepicker, { type DateValueType } from "react-tailwindcss-datepicker";
 import { endOfDay, isValid, parseISO, startOfDay } from "date-fns";
 import { SearchInput } from "@/components/ui/search-input";
-import { TextBody, TextEyebrow, TextHeading } from "@/components/ui/text";
+import { TextBody, TextEyebrow, TextHeading, TextMuted } from "@/components/ui/text";
 import { ArticleCard } from "@/components/ui/article-card";
 import { POST_MANIFEST } from "@/data/post-manifest";
 import type { PostMeta } from "@/types/post";
@@ -219,11 +219,11 @@ export function ArticlesPage() {
         </div>
       ) : null}
 
-      <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">
+      <TextMuted className="mt-4">
         {normalizedQuery
           ? `${filteredPosts.length} match${filteredPosts.length === 1 ? "" : "es"} for "${debouncedQuery.trim()}"`
           : `${POST_MANIFEST.length} post${POST_MANIFEST.length === 1 ? "" : "s"}`}
-      </p>
+      </TextMuted>
 
       {(normalizedQuery ||
         selectedTags.length > 0 ||
@@ -243,9 +243,9 @@ export function ArticlesPage() {
           <p className="text-sm font-medium text-neutral-800 dark:text-neutral-200">
             No articles match that search.
           </p>
-          <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+          <TextMuted className="mt-1">
             Try a different keyword from title, tags, excerpt, or date.
-          </p>
+          </TextMuted>
         </div>
       ) : (
         <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">

@@ -1,9 +1,9 @@
-import { ProjectCard, TextBody, TextHeading } from "@/components/ui";
+import { PageContainer, ProjectCard, TextBody, TextHeading } from "@/components/ui";
 import { PROJECTS } from "@/data/projects";
 
 export function ProjectsPage() {
   return (
-    <div className="mx-auto w-full max-w-5xl">
+    <PageContainer size="5xl">
       <TextHeading as="h1">Projects</TextHeading>
       <TextBody className="mt-3 max-w-2xl">
         A curated collection of my work in product design, creative engineering,
@@ -24,6 +24,6 @@ export function ProjectsPage() {
           />
         ))}
       </div>
-    </div>
+    </PageContainer>
   );
 }
