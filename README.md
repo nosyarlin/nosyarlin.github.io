@@ -34,3 +34,23 @@ npm run build
 ```
 
 Output: `dist/`.
+
+## Deploying to GitHub Pages
+
+This repo deploys `dist/` with GitHub Actions using `.github/workflows/deploy.yml`.
+
+### One-time repository setup
+
+1. GitHub repo Settings -> Pages
+2. Set **Source** to **GitHub Actions**
+3. Ensure the custom domain is `raysonlim.com` and HTTPS is enabled
+
+### How deep-link refresh is supported
+
+- `public/404.html` redirects unknown routes back to `/` while preserving path/query/hash.
+- `index.html` restores that route before React Router mounts.
+- This allows refresh/navigation on routes like `/articles/some-slug` to work on GitHub Pages.
+
+### Domain config
+
+- `public/CNAME` is included in the built site and set to `raysonlim.com`.

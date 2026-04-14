@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <script>
+      // GitHub Pages serves this file for unknown routes.
+      // Redirect back to index while preserving the original path.
+      (function () {
+        const location = window.location;
+        const newUrl =
+          "/" +
+          "?" +
+          location.pathname.slice(1).replace(/&/g, "~and~") +
+          (location.search ? "&" + location.search.slice(1).replace(/&/g, "~and~") : "") +
+          location.hash;
+        window.location.replace(newUrl);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
