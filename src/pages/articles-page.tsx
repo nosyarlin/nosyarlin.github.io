@@ -37,14 +37,8 @@ export function ArticlesPage() {
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [tagInput, setTagInput] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [writtenAfter, setWrittenAfter] = useState<DateValueType>({
-    startDate: null,
-    endDate: null,
-  });
-  const [writtenBefore, setWrittenBefore] = useState<DateValueType>({
-    startDate: null,
-    endDate: null,
-  });
+  const [writtenAfter, setWrittenAfter] = useState<DateValueType>(null);
+  const [writtenBefore, setWrittenBefore] = useState<DateValueType>(null);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedQuery(query), 180);
@@ -60,6 +54,7 @@ export function ArticlesPage() {
   }, []);
 
   const tagSuggestions = useMemo(() => {
+    if (tagInput.length === 0) return [];
     const needle = tagInput.trim().toLowerCase();
     return allTags
       .filter((tag) => !selectedTags.includes(tag))
@@ -112,6 +107,15 @@ export function ArticlesPage() {
 
   function removeTag(tag: string) {
     setSelectedTags((prev) => prev.filter((t) => t !== tag));
+  }
+
+  function clearFilters() {
+    setQuery("");
+    setDebouncedQuery("");
+    setTagInput("");
+    setSelectedTags([]);
+    setWrittenAfter(null);
+    setWrittenBefore(null);
   }
 
   return (
@@ -225,6 +229,19 @@ export function ArticlesPage() {
             ? `${filteredPosts.length} match${filteredPosts.length === 1 ? "" : "es"} for "${debouncedQuery.trim()}"`
             : `${POST_MANIFEST.length} post${POST_MANIFEST.length === 1 ? "" : "s"}`}
         </p>
+
+        {(normalizedQuery ||
+          selectedTags.length > 0 ||
+          writtenAfter?.startDate ||
+          writtenBefore?.startDate) && (
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="mt-2 text-sm font-medium text-primary underline-offset-4 hover:underline"
+          >
+            Clear all filters
+          </button>
+        )}
 
         {filteredPosts.length === 0 ? (
           <div className="mt-8 rounded-md border border-dashed border-neutral-300 bg-neutral-100/60 p-6 dark:border-neutral-700 dark:bg-neutral-900/60">

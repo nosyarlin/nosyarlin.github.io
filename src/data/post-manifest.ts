@@ -1,11 +1,23 @@
-import matter from "gray-matter";
+import type { ComponentType } from "react";
 import type { PostMeta } from "@/types/post";
+import type { MDXContent } from "mdx/types";
 
-const rawPostModules = import.meta.glob<string>("../../content/posts/*.mdx", {
-  eager: true,
-  import: "default",
-  query: "?raw",
-});
+type MdxPostModule = {
+  default: MDXContent;
+  matter: Record<string, unknown>;
+};
+
+const mdxPostModulesPromises = import.meta.glob("../../content/posts/*.mdx");
+
+async function resolveMdxPostModules(): Promise<Record<string, MdxPostModule>> {
+  const modules = await Promise.all(
+    Object.entries(mdxPostModulesPromises).map(async ([key, value]) => [
+      key,
+      await value(),
+    ]),
+  );
+  return Object.fromEntries(modules);
+}
 
 function normalizeTags(tags: unknown): string[] {
   if (Array.isArray(tags)) return tags.map(String);
@@ -23,25 +35,27 @@ function toBool(v: unknown): boolean | undefined {
   return undefined;
 }
 
-function parseFrontmatter(raw: string, filePath: string): PostMeta | null {
-  const { data } = matter(raw);
-  if (typeof data !== "object" || data === null) return null;
-
-  const title = typeof data.title === "string" ? data.title : null;
-  const slug = typeof data.slug === "string" ? data.slug : null;
-  const date = typeof data.date === "string" ? data.date : null;
-  const excerpt = typeof data.excerpt === "string" ? data.excerpt : null;
+function parseFrontmatter(
+  filePath: string,
+  matter: Record<string, unknown>,
+): PostMeta | null {
+  const title = typeof matter.title === "string" ? matter.title : null;
+  const slug = typeof matter.slug === "string" ? matter.slug : null;
+  const date = typeof matter.date === "string" ? matter.date : null;
+  const excerpt = typeof matter.excerpt === "string" ? matter.excerpt : null;
 
   if (!title || !slug || !date || !excerpt) {
-    console.warn(`[post-manifest] Skipping ${filePath}: missing title, slug, date, or excerpt`);
+    console.warn(
+      `[post-manifest] Skipping ${filePath}: missing title, slug, date, or excerpt`,
+    );
     return null;
   }
 
   const readMinutes =
-    typeof data.readMinutes === "number"
-      ? data.readMinutes
-      : typeof data.readMinutes === "string"
-        ? Number.parseInt(data.readMinutes, 10)
+    typeof matter.readMinutes === "number"
+      ? matter.readMinutes
+      : typeof matter.readMinutes === "string"
+        ? Number.parseInt(matter.readMinutes, 10)
         : undefined;
 
   return {
@@ -49,26 +63,29 @@ function parseFrontmatter(raw: string, filePath: string): PostMeta | null {
     slug,
     date,
     excerpt,
-    tags: normalizeTags(data.tags),
-    cover: typeof data.cover === "string" ? data.cover : undefined,
-    featured: toBool(data.featured),
-    draft: toBool(data.draft),
+    tags: normalizeTags(matter.tags),
+    cover: typeof matter.cover === "string" ? matter.cover : undefined,
+    featured: toBool(matter.featured),
+    draft: toBool(matter.draft),
     readMinutes: Number.isFinite(readMinutes) ? readMinutes : undefined,
   };
 }
 
-function collectMeta(): PostMeta[] {
+export function collectMetaFromModules(
+  modules: Record<string, MdxPostModule>,
+): PostMeta[] {
   const list: PostMeta[] = [];
-  for (const filePath of Object.keys(rawPostModules)) {
-    const raw = rawPostModules[filePath];
-    if (typeof raw !== "string") continue;
-    const meta = parseFrontmatter(raw, filePath);
+
+  Object.entries(modules).forEach(([filePath, module]) => {
+    const meta = parseFrontmatter(filePath, module.matter);
     if (meta) list.push(meta);
-  }
+  });
+
   return list;
 }
 
-const allParsed = collectMeta();
+const mdxPostModules = await resolveMdxPostModules();
+const allParsed = collectMetaFromModules(mdxPostModules);
 
 /** Every post with valid front matter (includes drafts). */
 export const ALL_POST_META: PostMeta[] = [...allParsed].sort((a, b) =>
@@ -88,4 +105,12 @@ export function getPostManifest(): PostMeta[] {
 
 export function getPostBySlug(slug: string): PostMeta | undefined {
   return POST_MANIFEST.find((p) => p.slug === slug);
+}
+
+export function findPostComponentBySlug(slug: string): ComponentType | null {
+  const moduleEntry = Object.entries(mdxPostModules).find(([path]) =>
+    path.endsWith(`/${slug}.mdx`),
+  );
+  if (!moduleEntry) return null;
+  return moduleEntry[1].default ?? null;
 }
