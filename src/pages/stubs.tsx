@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArticleCard } from "@/components/ui/article-card";
-import { PageContainer, TextBody, TextEyebrow, TextHeading, TextMuted } from "@/components/ui";
+import { TextBody, TextEyebrow, TextHeading, TextMuted } from "@/components/ui";
+import { PageContainer } from "@/components/layout";
 import { POST_MANIFEST } from "@/data/post-manifest";
 
 export function HomePage() {
@@ -11,7 +12,7 @@ export function HomePage() {
   const recent = sorted.filter((p) => p.slug !== featured?.slug).slice(0, 6);
 
   return (
-    <PageContainer size="6xl">
+    <PageContainer>
       <TextEyebrow>Home</TextEyebrow>
       <TextHeading as="h1" className="mt-2">
         Notes on building calm, useful software.
@@ -52,13 +53,9 @@ export function HomePage() {
             ))}
           </div>
         ) : featured ? (
-          <TextMuted>
-            Only one article is published right now.
-          </TextMuted>
+          <TextMuted>Only one article is published right now.</TextMuted>
         ) : (
-          <TextMuted>
-            No published articles yet.
-          </TextMuted>
+          <TextMuted>No published articles yet.</TextMuted>
         )}
       </section>
     </PageContainer>

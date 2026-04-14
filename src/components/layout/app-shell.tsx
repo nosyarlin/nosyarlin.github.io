@@ -240,7 +240,7 @@ function AppShellInner() {
           onToggleDesktopSidebar={toggleDesktopSidebar}
         />
         <main
-          className="flex-1 overflow-auto mx-auto w-full max-w-6xl p-6 md:p-10"
+          className="flex-1 overflow-auto mx-auto w-full max-w-6xl"
           id="main-content"
         >
           <Outlet />

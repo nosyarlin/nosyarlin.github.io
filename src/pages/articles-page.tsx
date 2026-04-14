@@ -3,7 +3,8 @@ import { Search, X } from "lucide-react";
 import Datepicker, { type DateValueType } from "react-tailwindcss-datepicker";
 import { endOfDay, isValid, parseISO, startOfDay } from "date-fns";
 import { SearchInput } from "@/components/ui/search-input";
-import { TextBody, TextEyebrow, TextHeading, TextMuted } from "@/components/ui/text";
+import { PageContainer } from "@/components/layout";
+import { TextBody, TextEyebrow, TextHeading, TextMuted } from "@/components/ui";
 import { ArticleCard } from "@/components/ui/article-card";
 import { POST_MANIFEST } from "@/data/post-manifest";
 import type { PostMeta } from "@/types/post";
@@ -119,7 +120,7 @@ export function ArticlesPage() {
   }
 
   return (
-    <div>
+    <PageContainer>
       <TextEyebrow>Articles</TextEyebrow>
       <TextHeading as="h1" className="mt-2">
         All posts
@@ -254,6 +255,6 @@ export function ArticlesPage() {
           ))}
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }

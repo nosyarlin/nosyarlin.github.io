@@ -1,10 +1,5 @@
-import {
-  Button,
-  PageContainer,
-  TextBody,
-  TextEyebrow,
-  TextHeading,
-} from "@/components/ui";
+import { Button, TextBody, TextEyebrow, TextHeading } from "@/components/ui";
+import { PageContainer } from "@/components/layout";
 
 const socials = [
   { label: "GitHub", href: "https://github.com/nosyarlin" },
@@ -14,7 +9,7 @@ const socials = [
 
 export function AboutPage() {
   return (
-    <PageContainer size="5xl">
+    <PageContainer>
       <TextEyebrow>About</TextEyebrow>
       <TextHeading as="h1" className="mt-2">
         Rayson Lim
