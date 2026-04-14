@@ -2,6 +2,7 @@ export * from "./article-card";
 export * from "./button";
 export * from "./card";
 export * from "./input";
+export * from "./page-container";
 export * from "./progress-bar";
 export * from "./project-card";
 export * from "./search-input";

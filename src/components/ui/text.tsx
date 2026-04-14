@@ -66,3 +66,14 @@ export function TextLabel({ className, ...props }: TextLabelProps) {
     />
   );
 }
+
+export type TextMutedProps = HTMLAttributes<HTMLParagraphElement>;
+
+export function TextMuted({ className, ...props }: TextMutedProps) {
+  return (
+    <p
+      className={cn("text-sm text-neutral-500 dark:text-neutral-400", className)}
+      {...props}
+    />
+  );
+}
