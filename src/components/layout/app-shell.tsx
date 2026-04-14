@@ -15,7 +15,13 @@ import { SidebarNavItem } from "@/components/ui/sidebar-nav-item";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/cn";
 
-function Brand({ onNavigate, className }: { onNavigate?: () => void; className?: string }) {
+function Brand({
+  onNavigate,
+  className,
+}: {
+  onNavigate?: () => void;
+  className?: string;
+}) {
   return (
     <div className={cn("min-w-0 shrink", className)}>
       <Link
@@ -96,7 +102,7 @@ function TopBar({
 }) {
   return (
     <header
-      className="flex h-14 shrink-0 items-center gap-2 border-b border-neutral-200 bg-white px-3 dark:border-neutral-700 dark:bg-neutral-900 md:gap-3 md:px-4"
+      className="flex h-14 shrink-0 items-center gap-2 bg-neutral-50 px-3 dark:bg-neutral-950 md:gap-3 md:px-4"
       role="banner"
     >
       <button
@@ -233,9 +239,33 @@ function AppShellInner() {
           desktopSidebarOpen={desktopSidebarOpen}
           onToggleDesktopSidebar={toggleDesktopSidebar}
         />
-        <main className="flex-1 overflow-auto" id="main-content">
+        <main
+          className="flex-1 overflow-auto mx-auto w-full max-w-6xl p-6 md:p-10"
+          id="main-content"
+        >
           <Outlet />
         </main>
+        <footer className="border-t border-neutral-200 px-6 py-6 dark:border-neutral-700 md:px-10">
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+              <a
+                href="https://www.linkedin.com/in/rayson-lim/"
+                className="text-neutral-600 hover:text-primary dark:text-neutral-400 dark:hover:text-primary-200"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://github.com/nosyarlin"
+                className="text-neutral-600 hover:text-primary dark:text-neutral-400 dark:hover:text-primary-200"
+              >
+                Github
+              </a>
+            </div>
+            <p className="mt-3 text-xs text-neutral-500 dark:text-neutral-400">
+              © {new Date().getFullYear()} Rayson Lim. All rights reserved.
+            </p>
+          </div>
+        </footer>
       </div>
     </div>
   );

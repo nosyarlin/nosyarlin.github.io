@@ -11,84 +11,63 @@ export function HomePage() {
   const recent = sorted.filter((p) => p.slug !== featured?.slug).slice(0, 6);
 
   return (
-    <div className="flex min-h-[calc(100dvh-3.5rem)] flex-col p-6 md:p-10">
-      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col">
-        <TextEyebrow>Home</TextEyebrow>
-        <TextHeading as="h1" className="mt-2">
-          Notes on building calm, useful software.
-        </TextHeading>
-        <TextBody className="mt-3 max-w-2xl text-neutral-600 dark:text-neutral-400">
-          Essays on design systems, product thinking, and steady execution. Every article
-          is authored from local MDX content and rendered directly from the post manifest.
-        </TextBody>
+    <div className="mx-auto w-full max-w-6xl">
+      <TextEyebrow>Home</TextEyebrow>
+      <TextHeading as="h1" className="mt-2">
+        Notes on building calm, useful software.
+      </TextHeading>
+      <TextBody className="mt-3 max-w-2xl text-neutral-600 dark:text-neutral-400">
+        Essays on design systems, product thinking, and steady execution. Every
+        article is authored from local MDX content and rendered directly from
+        the post manifest.
+      </TextBody>
 
-        {featured ? (
-          <section className="mt-10">
-            <div className="mb-4 flex items-center justify-between">
-              <TextHeading as="h3">Featured entry</TextHeading>
-              <Link
-                to="/articles"
-                className="text-sm font-medium text-primary underline-offset-4 hover:underline"
-              >
-                View all articles
-              </Link>
-            </div>
-            <ArticleCard post={featured} layout="horizontal" />
-          </section>
-        ) : null}
-
+      {featured ? (
         <section className="mt-10">
           <div className="mb-4 flex items-center justify-between">
-            <TextHeading as="h3">Recent entries</TextHeading>
-            <p className="text-sm text-neutral-500 dark:text-neutral-400">
-              {sorted.length} published {sorted.length === 1 ? "post" : "posts"}
-            </p>
+            <TextHeading as="h3">Featured entry</TextHeading>
+            <Link
+              to="/articles"
+              className="link-accent text-sm font-medium underline-offset-4 hover:underline"
+            >
+              View all articles
+            </Link>
           </div>
-
-          {recent.length > 0 ? (
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {recent.map((post) => (
-                <ArticleCard key={post.slug} post={post} />
-              ))}
-            </div>
-          ) : featured ? (
-            <p className="text-sm text-neutral-500 dark:text-neutral-400">
-              Only one article is published right now.
-            </p>
-          ) : (
-            <p className="text-sm text-neutral-500 dark:text-neutral-400">
-              No published articles yet.
-            </p>
-          )}
+          <ArticleCard post={featured} layout="horizontal" />
         </section>
+      ) : null}
 
-        <footer className="mt-auto border-t border-neutral-200 pt-6 dark:border-neutral-700">
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-            <a href="#" className="text-neutral-600 hover:text-primary dark:text-neutral-400 dark:hover:text-primary-200">
-              Twitter
-            </a>
-            <a href="#" className="text-neutral-600 hover:text-primary dark:text-neutral-400 dark:hover:text-primary-200">
-              LinkedIn
-            </a>
-            <a href="#" className="text-neutral-600 hover:text-primary dark:text-neutral-400 dark:hover:text-primary-200">
-              Newsletter
-            </a>
-            <a href="#" className="text-neutral-600 hover:text-primary dark:text-neutral-400 dark:hover:text-primary-200">
-              RSS
-            </a>
-          </div>
-          <p className="mt-3 text-xs text-neutral-500 dark:text-neutral-400">
-            © {new Date().getFullYear()} Rayson Lim. All rights reserved.
+      <section className="mt-10">
+        <div className="mb-4 flex items-center justify-between">
+          <TextHeading as="h3">Recent entries</TextHeading>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+            {sorted.length} published {sorted.length === 1 ? "post" : "posts"}
           </p>
-        </footer>
-      </div>
+        </div>
+
+        {recent.length > 0 ? (
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {recent.map((post) => (
+              <ArticleCard key={post.slug} post={post} />
+            ))}
+          </div>
+        ) : featured ? (
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+            Only one article is published right now.
+          </p>
+        ) : (
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+            No published articles yet.
+          </p>
+        )}
+      </section>
     </div>
   );
 }
 
 export function ProjectsPageStub() {
   return (
-    <div className="p-6 md:p-10">
+    <div>
       <TextEyebrow>Projects</TextEyebrow>
       <TextHeading as="h1" className="mt-2">
         Coming soon
@@ -102,7 +81,7 @@ export function ProjectsPageStub() {
 
 export function AboutPageStub() {
   return (
-    <div className="p-6 md:p-10">
+    <div>
       <TextEyebrow>About</TextEyebrow>
       <TextHeading as="h1" className="mt-2">
         Coming soon
