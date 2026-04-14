@@ -11,21 +11,20 @@ export type SearchInputProps = Omit<
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
   function SearchInput({ className, leftIcon, ...props }, ref) {
     return (
-      <div
-        className={cn(
-          "flex items-center gap-2 rounded-md border border-neutral-200 bg-surface-muted px-3 py-2 shadow-inner dark:border-neutral-600 dark:bg-neutral-700/90",
-          className,
-        )}
-      >
+      <div className="relative w-full">
         {leftIcon ? (
-          <span className="shrink-0 text-neutral-400 dark:text-neutral-500">
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500">
             {leftIcon}
           </span>
         ) : null}
         <input
           ref={ref}
           type="search"
-          className="min-w-0 flex-1 bg-transparent text-sm text-neutral-900 outline-none placeholder:text-neutral-400 dark:text-neutral-50 dark:placeholder:text-neutral-500"
+          className={cn(
+            "input-base",
+            leftIcon ? "pl-9" : undefined,
+            className,
+          )}
           {...props}
         />
       </div>
