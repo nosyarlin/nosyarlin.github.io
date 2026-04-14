@@ -64,17 +64,3 @@ export function HomePage() {
     </div>
   );
 }
-
-export function AboutPageStub() {
-  return (
-    <div>
-      <TextEyebrow>About</TextEyebrow>
-      <TextHeading as="h1" className="mt-2">
-        Coming soon
-      </TextHeading>
-      <TextBody className="mt-3 max-w-prose text-neutral-600 dark:text-neutral-400">
-        About page content ships in RAY-41.
-      </TextBody>
-    </div>
-  );
-}
