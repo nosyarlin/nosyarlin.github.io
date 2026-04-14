@@ -24,10 +24,6 @@ export function AboutPage() {
           <span className="inline-flex rounded-md bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary dark:bg-primary/20 dark:text-primary-200">
             Software Engineer
           </span>
-          <blockquote className="rounded-md border border-neutral-200 bg-neutral-100 p-4 text-sm italic text-neutral-600 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
-            “Build practical systems with clear interfaces and enough elegance to
-            disappear into everyday use.”
-          </blockquote>
         </aside>
 
         <section>
@@ -47,8 +43,16 @@ export function AboutPage() {
           </TextBody>
 
           <div className="mt-8 flex flex-wrap gap-3">
+            <a href="/rayson-lim-resume-2026.pdf" download>
+              <Button>Download Resume</Button>
+            </a>
             {socials.map((social) => (
-              <a key={social.label} href={social.href} target="_blank" rel="noreferrer">
+              <a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noreferrer"
+              >
                 <Button variant="outline">{social.label}</Button>
               </a>
             ))}
