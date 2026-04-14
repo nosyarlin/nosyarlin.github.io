@@ -1,16 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
-import {
-  FileText,
-  Folder,
-  Home,
-  Menu,
-  PanelLeftClose,
-  PanelLeftOpen,
-  User,
-  X,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { FileText, Folder, Home, Menu, User, X } from "lucide-react";
 import { SidebarNavItem } from "@/components/ui/sidebar-nav-item";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/cn";
@@ -89,55 +79,75 @@ function SiteNav({
 const topIconBtn =
   "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-800 transition hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:bg-neutral-700 dark:ring-offset-neutral-900";
 
+function DesktopTopNav() {
+  const base =
+    "px-3 py-2 text-sm font-medium text-neutral-600 transition hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:text-neutral-300 dark:hover:text-neutral-50 dark:ring-offset-neutral-900";
+  const active =
+    "text-primary underline underline-offset-8 decoration-primary decoration-2 dark:text-neutral-50";
+
+  return (
+    <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
+      <NavLink
+        to="/"
+        end
+        className={({ isActive }) => cn(base, isActive && active)}
+      >
+        Home
+      </NavLink>
+      <NavLink
+        to="/articles"
+        className={({ isActive }) => cn(base, isActive && active)}
+      >
+        Articles
+      </NavLink>
+      <NavLink
+        to="/projects"
+        className={({ isActive }) => cn(base, isActive && active)}
+      >
+        Projects
+      </NavLink>
+      <NavLink
+        to="/about"
+        className={({ isActive }) => cn(base, isActive && active)}
+      >
+        About
+      </NavLink>
+    </nav>
+  );
+}
+
 function TopBar({
   mobileNavOpen,
   onToggleMobileNav,
-  desktopSidebarOpen,
-  onToggleDesktopSidebar,
 }: {
   mobileNavOpen: boolean;
   onToggleMobileNav: () => void;
-  desktopSidebarOpen: boolean;
-  onToggleDesktopSidebar: () => void;
 }) {
   return (
     <header
-      className="flex h-14 shrink-0 items-center gap-2 bg-neutral-50 px-6 pt-3 dark:bg-neutral-950 md:gap-3 md:px-4"
+      className="bg-neutral-50 px-6 pt-3 dark:bg-neutral-950"
       role="banner"
     >
-      <button
-        type="button"
-        className={cn(topIconBtn, "md:hidden")}
-        aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
-        aria-expanded={mobileNavOpen}
-        onClick={onToggleMobileNav}
-      >
-        {mobileNavOpen ? (
-          <X className="h-5 w-5" aria-hidden />
-        ) : (
-          <Menu className="h-5 w-5" aria-hidden />
-        )}
-      </button>
+      <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-2 md:gap-3">
+        <button
+          type="button"
+          className={cn(topIconBtn, "md:hidden")}
+          aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileNavOpen}
+          onClick={onToggleMobileNav}
+        >
+          {mobileNavOpen ? (
+            <X className="h-5 w-5" aria-hidden />
+          ) : (
+            <Menu className="h-5 w-5" aria-hidden />
+          )}
+        </button>
 
-      <Button
-        type="button"
-        variant="ghost"
-        className="hidden h-11 w-11 shrink-0 p-0 md:inline-flex"
-        aria-label={desktopSidebarOpen ? "Hide sidebar" : "Show sidebar"}
-        aria-pressed={desktopSidebarOpen}
-        onClick={onToggleDesktopSidebar}
-      >
-        {desktopSidebarOpen ? (
-          <PanelLeftClose className="h-5 w-5" aria-hidden />
-        ) : (
-          <PanelLeftOpen className="h-5 w-5" aria-hidden />
-        )}
-      </Button>
-
-      <Brand className="pr-1" />
-      <div className="flex-1" />
-
-      <ThemeToggle className="h-11 w-11 shrink-0" />
+        <Brand className="pr-1" />
+        <div className="flex-1" />
+        <DesktopTopNav />
+        <ThemeToggle className="h-11 w-11 shrink-0" />
+      </div>
     </header>
   );
 }
@@ -145,15 +155,11 @@ function TopBar({
 function AppShellInner() {
   const location = useLocation();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const drawerTitleId = "site-mobile-nav-title";
 
   const closeMobile = useCallback(() => setMobileNavOpen(false), []);
   const toggleMobile = useCallback(() => setMobileNavOpen((o) => !o), []);
-  const toggleDesktopSidebar = useCallback(() => {
-    setDesktopSidebarOpen((o) => !o);
-  }, []);
 
   useEffect(() => {
     closeMobile();
@@ -182,18 +188,6 @@ function AppShellInner() {
 
   return (
     <div className="flex min-h-screen bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50">
-      <aside
-        className={cn(
-          "hidden shrink-0 flex-col overflow-hidden border-neutral-200 bg-surface-sidebar transition-[width] duration-200 ease-out dark:border-neutral-700 dark:bg-neutral-800 md:flex",
-          desktopSidebarOpen ? "w-64 border-r" : "w-0 border-transparent",
-        )}
-        aria-label="Site"
-      >
-        <div className="flex w-64 flex-1 flex-col gap-6 p-4 pt-6">
-          <SiteNav />
-        </div>
-      </aside>
-
       {mobileNavOpen ? (
         <div className="fixed inset-0 z-40 md:hidden">
           <div
@@ -236,8 +230,6 @@ function AppShellInner() {
         <TopBar
           mobileNavOpen={mobileNavOpen}
           onToggleMobileNav={toggleMobile}
-          desktopSidebarOpen={desktopSidebarOpen}
-          onToggleDesktopSidebar={toggleDesktopSidebar}
         />
         <main
           className="flex-1 overflow-auto mx-auto w-full max-w-6xl px-6 md:px-0"
