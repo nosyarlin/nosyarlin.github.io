@@ -36,14 +36,14 @@ export function ProjectCard({
         <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50">
           {title}
         </h3>
-        <p className="flex-1 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
-          {description}
-        </p>
         <div className="flex flex-wrap gap-2">
           {tags.map((t) => (
             <TagPill key={t}>{t}</TagPill>
           ))}
         </div>
+        <p className="flex-1 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+          {description}
+        </p>
         {href ? (
           <div className="mt-auto flex justify-end pt-2">
             <a

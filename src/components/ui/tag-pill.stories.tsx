@@ -6,7 +6,6 @@ const meta = {
   component: TagPill,
   args: {
     children: "Technology",
-    variant: "neutral" as const,
   },
   argTypes: {
     variant: {
