@@ -72,10 +72,7 @@ export function ArticleDetailPage() {
 
   return (
     <PageContainer>
-      <Link
-        to="/articles"
-        className="text-sm font-medium text-primary underline-offset-4 hover:underline"
-      >
+      <Link to="/articles" className="link-accent">
         ← Back to articles
       </Link>
 
