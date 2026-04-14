@@ -23,7 +23,7 @@ export const PROJECTS: ProjectItem[] = [
     image: "/imgs/se7en.jpg",
     imageAlt: "Timetable scheduler interface",
     tags: ["NodeJS", "Python", "MySQL"],
-    href: "https://youtu.be/LYNfFkF9f3Q",
+    href: "https://github.com/nosyarlin/se7en-scheduler",
   },
   {
     title: "Part-of-Speech Tagging",
@@ -32,7 +32,7 @@ export const PROJECTS: ProjectItem[] = [
     image: "/imgs/language.jpg",
     imageAlt: "Natural language processing project",
     tags: ["Machine Learning", "Python"],
-    href: "https://github.com/nosyarlin/machine-learning-pos-tagging",
+    href: "https://github.com/nosyarlin/ML-Project",
   },
   {
     title: "Happiness Map of Singapore",
@@ -41,7 +41,7 @@ export const PROJECTS: ProjectItem[] = [
     image: "/imgs/makingmaps.png",
     imageAlt: "Map visualization of happiness in Singapore",
     tags: ["R", "Shiny", "Plotly"],
-    href: "https://raysonljk.shinyapps.io/happiness-map/",
+    href: "https://nosyarlin.shinyapps.io/sentiment_map/",
   },
   {
     title: "ISTD Showcase Voting System",
@@ -50,7 +50,7 @@ export const PROJECTS: ProjectItem[] = [
     image: "/imgs/virk.jpg",
     imageAlt: "Voting system project",
     tags: ["PHP", "MySQL", "Android"],
-    href: "https://github.com/nosyarlin/voting-system",
+    href: "https://github.com/ashiswin/VIRK",
   },
   {
     title: "Cyber Attack Detection",
@@ -59,6 +59,6 @@ export const PROJECTS: ProjectItem[] = [
     image: "/imgs/data.jpg",
     imageAlt: "Data science cyber attack detection project",
     tags: ["R", "Python", "Data Science"],
-    href: "https://github.com/nosyarlin/cyber-attack-detection",
+    href: "https://github.com/nosyarlin/Cyber-Attack-Prediction",
   },
 ];
