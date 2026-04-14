@@ -1,10 +1,11 @@
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 
-type PageContainerSize = "3xl" | "5xl" | "6xl";
+type PageContainerSize = "3xl" | "4xl" | "5xl" | "6xl";
 
 const sizeClasses: Record<PageContainerSize, string> = {
   "3xl": "max-w-3xl",
+  "4xl": "max-w-4xl",
   "5xl": "max-w-5xl",
   "6xl": "max-w-6xl",
 };

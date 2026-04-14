@@ -55,7 +55,7 @@ export function ArticleDetailPage() {
   if (!post) {
     return (
       <div className="p-6 md:p-10">
-        <PageContainer size="3xl">
+        <PageContainer size="4xl">
           <TextEyebrow>Article</TextEyebrow>
           <TextHeading as="h1" className="mt-2">
             Not found
@@ -74,7 +74,7 @@ export function ArticleDetailPage() {
 
   return (
     <div className="p-6 md:p-10">
-      <article className="mx-auto w-full max-w-3xl">
+      <article className="mx-auto w-full max-w-4xl">
         <Link
           to="/articles"
           className="text-sm font-medium text-primary underline-offset-4 hover:underline"
