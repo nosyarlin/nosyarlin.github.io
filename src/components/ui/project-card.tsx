@@ -6,6 +6,7 @@ export type ProjectCardProps = {
   title: string;
   description: string;
   image: string;
+  imageFallback?: string;
   imageAlt?: string;
   tags: string[];
   href?: string;
@@ -16,22 +17,29 @@ export function ProjectCard({
   title,
   description,
   image,
+  imageFallback,
   imageAlt = "",
   tags,
   href,
   className,
 }: ProjectCardProps) {
+  const imageIsWebp = image.toLowerCase().endsWith(".webp");
+  const fallbackSrc = imageFallback ?? image;
+
   return (
     <Card className={cn("flex h-full flex-col", className)}>
-      <img
-        src={image}
-        alt={imageAlt}
-        className="h-44 w-full object-cover"
-        onError={(e) => {
-          const el = e.currentTarget;
-          el.style.display = "none";
-        }}
-      />
+      <picture>
+        {imageIsWebp ? <source srcSet={image} type="image/webp" /> : null}
+        <img
+          src={fallbackSrc}
+          alt={imageAlt}
+          className="h-44 w-full object-cover"
+          onError={(e) => {
+            const el = e.currentTarget;
+            el.style.display = "none";
+          }}
+        />
+      </picture>
       <CardBody className="flex flex-1 flex-col gap-3">
         <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50">
           {title}

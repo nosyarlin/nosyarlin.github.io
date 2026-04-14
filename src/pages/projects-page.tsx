@@ -19,6 +19,7 @@ export function ProjectsPage() {
             title={project.title}
             description={project.description}
             image={project.image}
+            imageFallback={project.imageFallback}
             imageAlt={project.imageAlt}
             tags={project.tags}
             href={project.href}
