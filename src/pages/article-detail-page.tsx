@@ -9,6 +9,7 @@ import {
   TextMuted,
 } from "@/components/ui";
 import { getPostBySlug, findPostComponentBySlug } from "@/data/post-manifest";
+import { PageContainer } from "@/components/layout";
 
 function formatDate(iso: string) {
   const parsed = new Date(iso);
@@ -50,7 +51,7 @@ export function ArticleDetailPage() {
 
   if (!post) {
     return (
-      <article>
+      <PageContainer>
         <TextEyebrow>Article</TextEyebrow>
         <TextHeading as="h1" className="mt-2">
           Not found
@@ -65,12 +66,12 @@ export function ArticleDetailPage() {
           </Link>
           .
         </TextBody>
-      </article>
+      </PageContainer>
     );
   }
 
   return (
-    <article>
+    <PageContainer>
       <Link
         to="/articles"
         className="text-sm font-medium text-primary underline-offset-4 hover:underline"
@@ -107,6 +108,6 @@ export function ArticleDetailPage() {
           This article body could not be loaded.
         </TextMuted>
       )}
-    </article>
+    </PageContainer>
   );
 }

@@ -102,7 +102,7 @@ function TopBar({
 }) {
   return (
     <header
-      className="flex h-14 shrink-0 items-center gap-2 bg-neutral-50 px-3 dark:bg-neutral-950 md:gap-3 md:px-4"
+      className="flex h-14 shrink-0 items-center gap-2 bg-neutral-50 px-6 pt-3 dark:bg-neutral-950 md:gap-3 md:px-4"
       role="banner"
     >
       <button
@@ -240,7 +240,7 @@ function AppShellInner() {
           onToggleDesktopSidebar={toggleDesktopSidebar}
         />
         <main
-          className="flex-1 overflow-auto mx-auto w-full max-w-6xl"
+          className="flex-1 overflow-auto mx-auto w-full max-w-6xl px-6 md:px-0"
           id="main-content"
         >
           <Outlet />
