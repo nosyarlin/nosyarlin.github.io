@@ -17,11 +17,14 @@ export function AboutPage() {
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[280px_1fr]">
         <aside className="space-y-4">
-          <img
-            src="/imgs/profile.png"
-            alt="Portrait of Rayson Lim"
-            className="aspect-square w-full rounded-md border border-neutral-200 object-cover dark:border-neutral-700"
-          />
+          <picture>
+            <source srcSet="/imgs/webp/profile.webp" type="image/webp" />
+            <img
+              src="/imgs/profile.png"
+              alt="Portrait of Rayson Lim"
+              className="aspect-square w-full rounded-md border border-neutral-200 object-cover dark:border-neutral-700"
+            />
+          </picture>
           <span className="inline-flex rounded-md bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary dark:bg-primary/20 dark:text-primary-200">
             Software Engineer
           </span>
