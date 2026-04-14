@@ -7,17 +7,9 @@ type MdxPostModule = {
   matter: Record<string, unknown>;
 };
 
-const mdxPostModulesPromises = import.meta.glob("../../content/posts/*.mdx");
-
-async function resolveMdxPostModules(): Promise<Record<string, MdxPostModule>> {
-  const modules = await Promise.all(
-    Object.entries(mdxPostModulesPromises).map(async ([key, value]) => [
-      key,
-      await value(),
-    ]),
-  );
-  return Object.fromEntries(modules);
-}
+const mdxPostModules = import.meta.glob("../../content/posts/*.mdx", {
+  eager: true,
+}) as Record<string, MdxPostModule>;
 
 function normalizeTags(tags: unknown): string[] {
   if (Array.isArray(tags)) return tags.map(String);
@@ -84,7 +76,6 @@ export function collectMetaFromModules(
   return list;
 }
 
-const mdxPostModules = await resolveMdxPostModules();
 const allParsed = collectMetaFromModules(mdxPostModules);
 
 /** Every post with valid front matter (includes drafts). */
