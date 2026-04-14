@@ -3,8 +3,8 @@ import { AppShell } from "@/components/layout/app-shell";
 import { ArticlesPage } from "@/pages/articles-page";
 import { ArticleDetailPage } from "@/pages/article-detail-page";
 import { AboutPage } from "@/pages/about-page";
+import { HomePage } from "@/pages/home-page";
 import { ProjectsPage } from "@/pages/projects-page";
-import { HomePage } from "@/pages/stubs";
 
 export default function App() {
   return (
