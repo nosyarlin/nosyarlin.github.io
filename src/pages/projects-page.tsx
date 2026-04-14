@@ -1,9 +1,10 @@
-import { PageContainer, ProjectCard, TextBody, TextHeading } from "@/components/ui";
+import { ProjectCard, TextBody, TextHeading } from "@/components/ui";
+import { PageContainer } from "@/components/layout";
 import { PROJECTS } from "@/data/projects";
 
 export function ProjectsPage() {
   return (
-    <PageContainer size="5xl">
+    <PageContainer>
       <TextHeading as="h1">Projects</TextHeading>
       <TextBody className="mt-3 max-w-2xl">
         A curated collection of my work in product design, creative engineering,
