@@ -1,13 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
-import {
-  FileText,
-  Folder,
-  Home,
-  Menu,
-  User,
-  X,
-} from "lucide-react";
+import { FileText, Folder, Home, Menu, User, X } from "lucide-react";
 import { SidebarNavItem } from "@/components/ui/sidebar-nav-item";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/cn";
@@ -88,22 +81,35 @@ const topIconBtn =
 
 function DesktopTopNav() {
   const base =
-    "rounded-md px-3 py-2 text-sm font-medium text-neutral-600 transition hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:text-neutral-300 dark:hover:text-neutral-50 dark:ring-offset-neutral-900";
+    "px-3 py-2 text-sm font-medium text-neutral-600 transition hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:text-neutral-300 dark:hover:text-neutral-50 dark:ring-offset-neutral-900";
   const active =
-    "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50";
+    "text-primary underline underline-offset-8 decoration-primary decoration-2 dark:text-neutral-50";
 
   return (
     <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
-      <NavLink to="/" end className={({ isActive }) => cn(base, isActive && active)}>
+      <NavLink
+        to="/"
+        end
+        className={({ isActive }) => cn(base, isActive && active)}
+      >
         Home
       </NavLink>
-      <NavLink to="/articles" className={({ isActive }) => cn(base, isActive && active)}>
+      <NavLink
+        to="/articles"
+        className={({ isActive }) => cn(base, isActive && active)}
+      >
         Articles
       </NavLink>
-      <NavLink to="/projects" className={({ isActive }) => cn(base, isActive && active)}>
+      <NavLink
+        to="/projects"
+        className={({ isActive }) => cn(base, isActive && active)}
+      >
         Projects
       </NavLink>
-      <NavLink to="/about" className={({ isActive }) => cn(base, isActive && active)}>
+      <NavLink
+        to="/about"
+        className={({ isActive }) => cn(base, isActive && active)}
+      >
         About
       </NavLink>
     </nav>
