@@ -15,12 +15,18 @@ export function HomePage() {
     <PageContainer>
       <TextEyebrow>Home</TextEyebrow>
       <TextHeading as="h1" className="mt-2">
-        Notes on building calm, useful software.
+        Records of my{" "}
+        <TextHeading as="h1" className="text-primary inline">
+          learnings
+        </TextHeading>{" "}
+        <br /> for the future me.
       </TextHeading>
       <TextBody className="mt-3 max-w-2xl text-neutral-600 dark:text-neutral-400">
-        Essays on design systems, product thinking, and steady execution. Every
-        article is authored from local MDX content and rendered directly from
-        the post manifest.
+        Welcome to my personal site! I am using this space to document my side
+        projects and experimentation so that I can <s>brag</s> look back on the
+        things I have done next time. Of course, this will double as my
+        portfolio page! Feel free to look around. It would make me very happy if
+        my work happens to help someone :)
       </TextBody>
 
       {featured ? (

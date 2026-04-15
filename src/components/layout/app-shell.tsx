@@ -231,10 +231,7 @@ function AppShellInner() {
           mobileNavOpen={mobileNavOpen}
           onToggleMobileNav={toggleMobile}
         />
-        <main
-          className="flex-1 overflow-auto mx-auto w-full max-w-6xl px-6 md:px-0"
-          id="main-content"
-        >
+        <main className="flex-1 overflow-auto px-6 md:px-10" id="main-content">
           <Outlet />
         </main>
         <footer className="border-t border-neutral-200 px-6 py-6 dark:border-neutral-700 md:px-10">

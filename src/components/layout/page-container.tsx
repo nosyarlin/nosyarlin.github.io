@@ -5,6 +5,9 @@ export type PageContainerProps = HTMLAttributes<HTMLDivElement>;
 
 export function PageContainer({ className, ...props }: PageContainerProps) {
   return (
-    <div className={cn("mx-auto w-full py-6 md:py-16", className)} {...props} />
+    <div
+      className={cn("mx-auto w-full  max-w-6xl py-6 md:py-16 ", className)}
+      {...props}
+    />
   );
 }
