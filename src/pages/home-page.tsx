@@ -16,9 +16,9 @@ export function HomePage() {
       <TextEyebrow>Home</TextEyebrow>
       <TextHeading as="h1" className="mt-2">
         Records of my{" "}
-        <TextHeading as="h1" className="text-primary inline">
+        <span className="text-primary inline dark:text-primary-400">
           learnings
-        </TextHeading>{" "}
+        </span>{" "}
         <br /> for the future me.
       </TextHeading>
       <TextBody className="mt-3 max-w-2xl text-neutral-600 dark:text-neutral-400">

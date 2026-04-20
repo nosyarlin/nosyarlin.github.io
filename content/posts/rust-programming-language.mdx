@@ -1,0 +1,150 @@
+---
+title: Rust Programming Language
+slug: rust-programming-language
+date: "2026-04-16"
+excerpt: |
+  Rust has consistently ranked as one of the most admired programming languages in Stack Overflow's annual developer survey.
+  Curious about the hype, I decided to dive in and understand its features and design.
+tags:
+  - Programming
+  - Language
+featured: true
+readMinutes: 30
+---
+
+# Introduction
+
+I’ve heard many good things about Rust over the years at developer conferences and across online forums. Now that I have
+some time on my hands, I decided to dive into Rust by reading _The Rust Programming Language_ book end to end. In my
+professional work, I’ve primarily used Hack, Python, TypeScript, and Ruby. Naturally, I’ll be comparing Rust to the
+languages I’m more familiar with. My first impression is that Rust feels very deliberate. Almost every feature in the
+language seems designed with safety and performance in mind, often at the cost of ergonomics.
+
+# Ownership
+
+Evidently, the defining feature of Rust is its ownership model. Each value in Rust has a single owner, and the scope of
+that owner determines the lifetime of the value. Instead of garbage collection, Rust enforces rules at compile time to
+ensure memory safety.
+
+You can either own data or borrow it via references. When borrowing, you must consider:
+
+- whether the reference is mutable or immutable
+- how long the reference lives (lifetimes)
+
+Rust enforces that you can have either:
+
+- multiple immutable references, or
+- one mutable reference
+
+but not both at the same time.
+
+Finally, engineers have to pay more attention to what is stored on the stack or heap because you must consider whether
+the pointer or the underlying data gets moved/copied.
+
+These constraints introduce additional cognitive overhead while coding. However, the benefit is that the compiler can
+deterministically free memory without needing a garbage collector. Compared to C and C++, where memory management is
+largely manual, Rust provides strong guarantees against common issues like use-after-free and data races. While this can
+slow you down initially, it significantly reduces an entire class of runtime bugs.
+
+# Statements and Expressions
+
+One thing that stood out to me is that Rust is expression-oriented.
+
+- `if`/`else` blocks are expressions
+- `{}` blocks are expressions
+- even `loop` can return a value
+
+The following example illustrates some of the features mentioned above.
+
+```rust
+fn main() {
+    let temperature = 30;
+
+    let advice = {
+        if temperature > 28 {
+            "Stay hydrated"
+        } else {
+            "Enjoy the weather"
+        }
+    };
+
+    println!("{}", advice);
+}
+```
+
+This makes it easy to compose operations and write code in a more declarative style. It reminds me of functional
+programming, where you transform data step by step. This works well with Rust’s ownership model. In a more imperative style,
+you constantly have to think about who owns what and when mutations happen. But with composition and chaining, each step
+consumes input and returns output, making the flow easier to reason about.
+
+There may be trade-offs in terms of performance or readability in some cases, but the compositional style feels easier to
+test and debug.
+
+# Object-Oriented Programming
+
+Rust doesn’t have traditional inheritance like Python or Hack. Instead, it relies on traits and composition. I tend to reach
+for inheritance quite often, especially in Python, to model “is-a” relationships and reuse logic. It’s a convenient way
+to share behavior and ensure compatibility across related types. Rust pushes you to reuse logic differently.
+
+## Traits
+
+Traits in Rust are surprisingly powerful:
+
+- **Interfaces with default implementations**  
+   Traits allow you to define shared behavior while also providing default implementations. This is something I often
+  want in Python, where abstract base classes require explicit overrides. (Although Python’s Protocols address this to
+  some extent.)
+
+- **Encouraging composition over inheritance**  
+   Long inheritance chains can become difficult to reason about as systems evolve. Traits avoid this by design. Instead,
+  you compose behavior through smaller, focused units. That said, I wonder if large codebases might end up with many traits
+  on a single type, making it harder to track where behavior is coming from.
+
+- **Generic parameters**  
+  Traits can also take generic parameters (like `Add<Rhs>`), which allows you to implement the same trait multiple times
+  for a type with different input types. For example, you can implement addition for Millimeters + Millimeters and
+  Millimeters + Meters separately while keeping the same API.
+
+While traits are powerful, Rust doesn’t seem to push you toward heavy OOP design. Dynamic dispatch (`dyn Trait`) exists,
+but it comes with trade-offs compared to static dispatch via generics.
+
+As the Rust book puts it:
+
+> “An object-oriented pattern won’t always be the best way to take advantage of Rust’s strengths, but it is an available option.”
+
+## Enums
+
+Rust’s enums are also more powerful than those in many other languages. You can attach data directly to each variant:
+
+```rust
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor(i32, i32, i32),
+}
+```
+
+This allows a single type to represent multiple kinds of data. Combined with pattern matching, this is a common way to
+model different states or variants in a system. It does resemble a form of polymorphism. However, excessive use can lead
+to large match statements, which may become hard to maintain if overused.
+
+# Summing It Up
+
+Rust is often positioned as a systems programming language that can replace C or C++ in certain domains, and that goal
+is reflected in its design. C and C++ offer high performance but require careful manual memory management. Rust aims
+to provide similar performance while enforcing safety guarantees at compile time. Through ownership, borrowing, and
+lifetimes, Rust helps you reason about memory without a garbage collector. The compiler is strict, but its error
+messages are generally helpful and guide you toward correct code.
+
+Looking at Rust’s expression-oriented style and lack of traditional OOP features, it seems to lean toward a more
+functional approach to structuring programs.
+
+Based on my initial impression, here are some guidelines I would follow when writing Rust:
+
+1.  Keep functions small and focused on a single transformation.
+1.  Prefer returning values to enable composition.
+1.  Keep traits small and composable.
+1.  Prefer `Result` over panicking so that errors can be handled at higher levels.
+
+Overall, Rust looks like a strong choice for systems-level work where performance and safety are both critical.
