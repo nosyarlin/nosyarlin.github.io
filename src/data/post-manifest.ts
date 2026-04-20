@@ -99,8 +99,8 @@ export function getPostBySlug(slug: string): PostMeta | undefined {
 }
 
 export function findPostComponentBySlug(slug: string): ComponentType | null {
-  const moduleEntry = Object.entries(mdxPostModules).find(([path]) =>
-    path.endsWith(`/${slug}.mdx`),
+  const moduleEntry = Object.entries(mdxPostModules).find(
+    ([_, module]) => module.matter.slug == slug,
   );
   if (!moduleEntry) return null;
   return moduleEntry[1].default ?? null;

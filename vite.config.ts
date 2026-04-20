@@ -8,6 +8,7 @@ import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { playwright } from "@vitest/browser-playwright";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
+import rehypeStarryNight from "rehype-starry-night";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -20,6 +21,7 @@ export default defineConfig({
           remarkFrontmatter,
           [remarkMdxFrontmatter, { name: "matter" }],
         ],
+        rehypePlugins: [rehypeStarryNight],
       }),
       enforce: "pre",
     },

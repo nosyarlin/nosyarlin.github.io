@@ -97,7 +97,7 @@ export function ArticleDetailPage() {
       {loading ? (
         <TextMuted className="mt-8">Loading article…</TextMuted>
       ) : PostBody ? (
-        <div className="mt-8 space-y-4 text-base leading-relaxed text-neutral-700 dark:text-neutral-300 [&_h1]:mt-8 [&_h1]:text-3xl [&_h1]:font-semibold [&_h1]:text-neutral-900 [&_h2]:mt-8 [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:text-neutral-900 [&_h3]:mt-6 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-neutral-900 [&_a]:text-primary [&_a]:underline-offset-4 [&_a:hover]:underline [&_blockquote]:rounded-md [&_blockquote]:border-l-4 [&_blockquote]:border-neutral-300 [&_blockquote]:bg-neutral-100 [&_blockquote]:px-4 [&_blockquote]:py-3 [&_blockquote]:italic [&_pre]:overflow-x-auto [&_pre]:rounded-md [&_pre]:bg-neutral-900 [&_pre]:p-4 [&_pre]:text-neutral-100 [&_ul]:list-disc [&_ul]:pl-6 dark:[&_h1]:text-neutral-50 dark:[&_h2]:text-neutral-50 dark:[&_h3]:text-neutral-100 dark:[&_blockquote]:border-neutral-600 dark:[&_blockquote]:bg-neutral-800">
+        <div className="article-content">
           <PostBody />
         </div>
       ) : (

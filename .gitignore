@@ -4,6 +4,7 @@ storybook-static
 .vite
 *.local
 .DS_Store
+**/.DS_Store
 *.log
 *.tsbuildinfo
 
