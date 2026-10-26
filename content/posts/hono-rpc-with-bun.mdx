@@ -1,0 +1,272 @@
+---
+title: Hono RPC + Bun workspaces, typed APIs without codegen
+slug: hono-rpc-with-bun
+date: "2026-10-24"
+excerpt: |
+  Six months ago I set out to turn a one-off wedding guestbook into a SaaS product, and used the chance to try Hono and Bun.
+  This is how that stack holds up for Cherished.ink: typesafe RPC across a monorepo, and the one Hono pattern that made it work.
+tags:
+  - Programming
+  - TypeScript
+  - Hono
+  - Bun
+featured: true
+readMinutes: 15
+---
+
+Six months ago, I set out to build a digital guestbook as a standalone SaaS product. It started as a one-off project for my friend's wedding,
+and I figured: why not productionize it and see if there's demand? I also used it as an excuse to try two tools I kept hearing about: Hono and Bun.
+This post is about how that stack has held up, including the one Hono pattern I had to figure out the hard way.
+
+## Tech Choices
+
+Here's a quick overview of the stack:
+
+- **Language:** TypeScript
+- **Backend framework:** Hono
+- **Runtime, package manager, and workspace manager:** Bun
+- **Frontend:** React, built with Vite
+
+## Hono
+
+I kept reading about Hono gaining popularity and wanted to see what the fuss was about. My first impression was pretty good. It's simple to use
+and comes with a lot of helpers that make your life easier: `cors` middleware for all your CORS options, `compress` middleware to compress your
+responses, `etag` middleware for caching, and so on.
+
+It's also easy to write your own middleware to reuse logic across endpoints. I mainly use this for session management. Middleware like
+`requireUser` and `requireGuestId` checks that a request is authenticated and puts the session data into the request context:
+
+```typescript
+/**
+ * Middleware to require a user to be authenticated
+ */
+export const requireUser = createMiddleware<AuthAppEnv>(async (c, next) => {
+  const session = await auth.api.getSession({
+    headers: c.req.header(),
+  });
+
+  if (!session) {
+    return c.json({ error: "Unauthorized" }, 401);
+  }
+
+  c.set("session", session.session);
+  c.set("user", session.user);
+
+  await next();
+});
+```
+
+### Hono RPC
+
+My favorite Hono feature is Hono RPC. It lets you share your API's contract with the frontend using nothing but TypeScript types. No OpenAPI spec,
+no code generation. On the backend, you chain your routes together and export the type of the result:
+
+```typescript
+// backend
+const routes = app
+  .basePath("/api")
+  .get("/healthz", (c) => c.json({ ok: true }));
+// ...
+
+export default app;
+export type ApiType = typeof routes;
+```
+
+Since I'm using a monorepo with Bun workspaces, my frontend can import `ApiType` straight from the backend code. Create a client with it and voilà!
+You get typesafe, function-like calls to your backend for free:
+
+```typescript
+// frontend
+import { hc } from "hono/client";
+
+export const api = hc<ApiType>(
+  import.meta.env.VITE_API_HOST ?? "http://localhost:3000",
+  { init: { credentials: "include" } }, // send auth cookies cross-origin
+);
+
+const res = await api.api.event.$put({
+  form: {
+    // ...
+  },
+});
+```
+
+TypeScript now catches it when the frontend sends the wrong inputs or reads the wrong outputs. Rename a field on the backend and the frontend
+build fails, which is exactly what you want.
+
+There are some catches, of course. If you're not using a monorepo like I am, you'll need some other way to publish the types and pull them
+into your frontend. I imagine that's the norm at a big enough company, where you want the backend and frontend deployed independently.
+The bigger catch: splitting your routes across files. Hono's [best practices page](https://hono.dev/docs/guides/best-practices) recommends
+against Ruby on Rails-style controllers, and suggests defining handlers inline and mounting each file with `app.route()`. In my experience,
+that pattern broke Hono RPC even when I chained everything as the docs recommend. My API routes did not show up in `ApiType`.
+What worked was the escape hatch the same page mentions: `factory.createHandlers()` from `hono/factory`, which keeps type inference intact.
+Any serious project ends up splitting its API into several files, and you'll almost certainly want RPC to keep working when you do.
+So in practice, I'd go straight for `createHandlers`:
+
+```typescript
+// event.ts
+import { createFactory } from "hono/factory";
+
+const factory = createFactory<AuthAppEnv>(); // typed env, so c.get("user") is typed
+const handleGetEvent = factory
+  .createHandlers
+  // ...
+  ();
+
+export const eventRouter = new Hono().get("/:id", ...handleGetEvent);
+// ...
+
+// guest.ts
+import { createFactory } from "hono/factory";
+
+const factory = createFactory<GuestAppEnv>();
+const handleCreateGuest = factory
+  .createHandlers
+  // ...
+  ();
+
+export const guestRouter = new Hono().put("/", ...handleCreateGuest);
+// ...
+
+// index.ts
+const app = new Hono({ strict: false });
+
+const routes = app
+  .basePath("/api")
+  .get("/healthz", (c) => c.json({ ok: true }))
+  .route("/event", eventRouter)
+  .route("/guest", guestRouter);
+// ...
+
+export default app;
+export type ApiType = typeof routes;
+```
+
+### Serving the marketing page
+
+I also use Hono to serve my marketing page. I wanted it server-rendered rather than client-side rendered, so that SEO works better.
+Hono lets you write pages in JSX, and gives you a couple of ways to turn that JSX into HTML.
+
+The first is to return the JSX directly and let Hono render it to HTML at request time:
+
+```typescript
+// index.ts
+import { HomePage } from "./components/HomePage";
+
+const cacheableHtml = cacheControl("public, max-age=3600");
+app.get("/", cacheableHtml, (c) => c.html(<HomePage />));
+```
+
+The second is to write a script that uses Hono's `toSSG()` function to generate static HTML files ahead of time, then serve those.
+I chose to serve JSX directly because for my use case, rendering at request time was fast enough especially with browser caching and
+Cloudflare as a CDN. Serving it directly also helps me keep my code and build step simpler.
+
+Keep in mind that Hono isn't really a full-stack framework. I wanted to hook up a few buttons and add Google
+Analytics to the marketing page, and couldn't find a simple "Hono way" to do it. The closest thing I found was using Vite with
+`hono/jsx/dom` to hydrate islands on a `hono/jsx` page, which felt like overkill for a handful of buttons. In the end,
+I wrote plain JavaScript and served it as a static file:
+
+```typescript
+// index.ts
+const { serveStatic } = await import("hono/bun");
+const serveStaticMiddleware = serveStatic({
+  root: "./static",
+  onFound: (_path, c) => {
+    c.header("Cache-Control", "public, max-age=86400");
+  },
+});
+
+app.use("/css/*", etag(), serveStaticMiddleware);
+app.use("/images/*", etag(), serveStaticMiddleware);
+app.use("/videos/*", etag(), serveStaticMiddleware);
+app.use("/js/*", etag(), serveStaticMiddleware);
+```
+
+Then load it with a script tag in the page's `<head>`:
+
+```html
+<html lang="en">
+  <head>
+    <!-- ... -->
+    <script src="/js/index.js" type="module"></script>
+  </head>
+  <!-- ... -->
+</html>
+```
+
+Low-tech, but it works, and the page stays fast.
+
+## Bun
+
+Bun has been making big waves lately. It's often benchmarked as faster than Node.js, and it ships with enough built-in tooling to cover
+most of what a TypeScript project needs. I use it as my runtime, package manager, and workspace manager. As a runtime, it runs
+my backend's `.tsx` files directly, even in production, so there's no compile step for the server at all.
+
+Bun workspaces let me keep several packages in one repository. Each part of the project stays separate, but sharing code between
+them is easy. My repo has two kinds of packages: **apps**, which holds the backend and two frontends
+(a dashboard for event hosts and a live feed for guests), and **packages**, which holds a shared UI component library.
+
+```
+<root>
+├── README.md
+├── bun.lock
+├── package.json
+├── apps
+│   ├── api
+│   ├── live
+│   └── web
+└── packages
+    └── ui
+```
+
+Setting up the workspaces took very little. In the root `package.json`, list where your packages live:
+
+```json
+{
+  "name": "guest-feed-web",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"]
+  // ...dependencies, devDependencies
+}
+```
+
+Then give each package a name. The backend's `package.json` also uses `exports` to expose its API types to the frontends:
+
+```json
+{
+  "name": "@guestfeed/api",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.tsx",
+    "./client-types": "./src/client-types/index.ts",
+    "./types": "./dist/types/src/client-types/api-type.d.ts"
+  }
+  // ...
+}
+```
+
+The frontend's `package.json` is much the same, except it adds the backend as a dev dependency so it can import those types:
+
+```json
+{
+  "name": "@guestfeed/web",
+  "type": "module",
+  "devDependencies": {
+    "@guestfeed/api": "workspace:*"
+    // ...
+  }
+}
+```
+
+Bun workspaces turned out to be a perfect fit for Hono, since they make it trivial to share types and code between frontend and backend.
+The downside of this tight coupling is that everything lives in one repository and ships together: merging to `main` triggers GitHub
+Actions to build images for the backend and both frontends, and I deploy all of them at once with a manually triggered workflow.
+For a small project with a few developers, I think this setup is great and speeds up development a lot.
+Once a team gets larger, though, you'll probably want to split up deployments.
+
+## Summing It Up
+
+So, would I pick Hono and Bun again? For this kind of project, yes, without much hesitation. If you're a small team writing TypeScript end
+to end in one repo, typed RPC plus Bun workspaces is hard to beat: rename a field on the backend and your frontend build tells you immediately.
+If your frontend and backend are owned by different teams, deployed separately, or written in different languages, most of that magic goes away,
+and a plain REST API with an OpenAPI spec is probably the better fit. Hono was originally built for Cloudflare Workers, so that might be my next experiment.
