@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "@/lib/theme";
+import { applyTheme, readDomTheme, type Theme } from "@/lib/theme";
 import { cn } from "@/lib/cn";
 
 export type ThemeToggleProps = {
@@ -11,7 +12,19 @@ export function ThemeToggle({
   className,
   "aria-label": ariaLabel = "Toggle color theme",
 }: ThemeToggleProps) {
-  const { theme, toggleTheme } = useTheme();
+  // The server can't know the theme; the inline head script has already set
+  // it on <html>, so sync from the DOM after hydration.
+  const [theme, setTheme] = useState<Theme | null>(null);
+
+  useEffect(() => {
+    setTheme(readDomTheme());
+  }, []);
+
+  function toggleTheme() {
+    const next = readDomTheme() === "dark" ? "light" : "dark";
+    applyTheme(next);
+    setTheme(next);
+  }
 
   return (
     <button
@@ -23,7 +36,12 @@ export function ThemeToggle({
         className,
       )}
     >
-      {theme === "dark" ? (
+      {theme === null ? (
+        <>
+          <Sun className="hidden h-5 w-5 dark:block" aria-hidden />
+          <Moon className="h-5 w-5 dark:hidden" aria-hidden />
+        </>
+      ) : theme === "dark" ? (
         <Sun className="h-5 w-5" aria-hidden />
       ) : (
         <Moon className="h-5 w-5" aria-hidden />

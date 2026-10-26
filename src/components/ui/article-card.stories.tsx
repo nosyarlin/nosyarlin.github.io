@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { MemoryRouter } from "react-router-dom";
 import type { PostMeta } from "@/types/post";
 import { ArticleCard } from "./article-card";
 
@@ -21,13 +20,6 @@ const sampleWithCover: PostMeta = {
 const meta = {
   title: "UI/ArticleCard",
   component: ArticleCard,
-  decorators: [
-    (Story) => (
-      <MemoryRouter>
-        <Story />
-      </MemoryRouter>
-    ),
-  ],
 } satisfies Meta<typeof ArticleCard>;
 
 export default meta;

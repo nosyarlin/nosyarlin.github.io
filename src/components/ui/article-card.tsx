@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { TagPill } from "@/components/ui/tag-pill";
+import { formatDate } from "@/lib/format-date";
 import { cn } from "@/lib/cn";
 import type { PostMeta } from "@/types/post";
 
@@ -8,18 +8,6 @@ export type ArticleCardProps = {
   className?: string;
   layout?: "horizontal" | "vertical";
 };
-
-function formatDate(iso: string) {
-  try {
-    return new Intl.DateTimeFormat("en", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    }).format(new Date(iso));
-  } catch {
-    return iso;
-  }
-}
 
 export function ArticleCard({
   post,
@@ -37,8 +25,8 @@ export function ArticleCard({
         )}
       >
         {post.cover ? (
-          <Link
-            to={href}
+          <a
+            href={href}
             className="relative aspect-[16/10] w-full shrink-0 bg-neutral-100 md:aspect-auto md:w-[min(40%,320px)] dark:bg-neutral-700"
           >
             <img
@@ -46,7 +34,7 @@ export function ArticleCard({
               alt=""
               className="h-full w-full object-cover"
             />
-          </Link>
+          </a>
         ) : null}
         <div className="flex flex-1 flex-col gap-3 p-5 md:p-6">
           <time
@@ -56,9 +44,9 @@ export function ArticleCard({
             {formatDate(post.date)}
           </time>
           <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
-            <Link to={href} className="link-accent">
+            <a href={href} className="link-accent">
               {post.title}
-            </Link>
+            </a>
           </h2>
           <p className="line-clamp-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
             {post.excerpt}
@@ -68,9 +56,9 @@ export function ArticleCard({
               <TagPill key={t}>{t}</TagPill>
             ))}
           </div>
-          <Link to={href} className="link-accent text-sm font-medium underline-offset-4 hover:underline">
+          <a href={href} className="link-accent text-sm font-medium underline-offset-4 hover:underline">
             Read the entry
-          </Link>
+          </a>
         </div>
       </article>
     );
@@ -88,9 +76,9 @@ export function ArticleCard({
         {post.readMinutes != null ? ` · ${post.readMinutes} min read` : ""}
       </p>
       <h3 className="mt-2 text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
-        <Link to={href} className="link-accent">
+        <a href={href} className="link-accent">
           {post.title}
-        </Link>
+        </a>
       </h3>
       <p className="mt-2 line-clamp-3 text-sm text-neutral-600 dark:text-neutral-400">
         {post.excerpt}

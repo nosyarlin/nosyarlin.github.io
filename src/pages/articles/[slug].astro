@@ -1,0 +1,79 @@
+---
+import { render } from "astro:content";
+import { PageContainer } from "@/components/layout";
+import { TagPill, TextEyebrow, TextHeading, TextMuted } from "@/components/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { formatDate } from "@/lib/format-date";
+import { getPublishedPosts, type PostEntry } from "@/lib/posts";
+import { SITE } from "@/lib/site";
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+type Props = { post: PostEntry };
+
+const { post } = Astro.props;
+const { data } = post;
+const { Content } = await render(post);
+
+// Collapse the multi-line YAML excerpt into one line for meta tags.
+const description = data.excerpt.replace(/\s+/g, " ").trim();
+const image = data.cover ?? `/og/${data.slug}.png`;
+const site = Astro.site ?? new URL("https://raysonlim.com");
+const url = new URL(`/articles/${data.slug}`, site).href;
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: data.title,
+    description,
+    datePublished: new Date(data.date).toISOString(),
+    image: new URL(image, site).href,
+    url,
+    mainEntityOfPage: url,
+    keywords: data.tags.join(", "),
+    author: { "@type": "Person", name: SITE.author, url: site.href },
+  },
+];
+---
+
+<BaseLayout
+  title={data.title}
+  description={description}
+  image={image}
+  type="article"
+  publishedTime={data.date}
+  tags={data.tags}
+  jsonLd={jsonLd}
+>
+  <PageContainer>
+    <a href="/articles" class="link-accent">← Back to articles</a>
+
+    <header class="mt-6">
+      <TextEyebrow>Article</TextEyebrow>
+      <TextHeading as="h1" className="mt-2">
+        {data.title}
+      </TextHeading>
+      <TextMuted className="mt-3">
+        <time datetime={data.date}>{formatDate(data.date)}</time>
+        {data.readMinutes != null ? ` · ${data.readMinutes} min read` : ""}
+      </TextMuted>
+      {
+        data.tags.length > 0 && (
+          <div class="mt-4 flex flex-wrap gap-2">
+            {data.tags.map((tag) => (
+              <TagPill>{tag}</TagPill>
+            ))}
+          </div>
+        )
+      }
+    </header>
+
+    <article class="article-content">
+      <Content />
+    </article>
+  </PageContainer>
+</BaseLayout>

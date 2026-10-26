@@ -1,0 +1,24 @@
+---
+import { ArticlesExplorer } from "@/components/articles-explorer";
+import { PageContainer } from "@/components/layout";
+import { TextBody, TextEyebrow, TextHeading } from "@/components/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPublishedPosts, toPostMeta } from "@/lib/posts";
+
+const posts = (await getPublishedPosts()).map(toPostMeta);
+---
+
+<BaseLayout
+  title="Articles"
+  description="All posts by Rayson Lim on software engineering, programming languages, and side projects."
+>
+  <PageContainer>
+    <TextEyebrow>Articles</TextEyebrow>
+    <TextHeading as="h1" className="mt-2">All posts</TextHeading>
+    <TextBody className="mt-3 max-w-prose">
+      Filters apply to metadata only: title, excerpt, tags, and dates.
+    </TextBody>
+
+    <ArticlesExplorer client:load posts={posts} />
+  </PageContainer>
+</BaseLayout>

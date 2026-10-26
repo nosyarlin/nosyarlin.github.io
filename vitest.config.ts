@@ -1,32 +1,12 @@
-/// <reference types="vitest/config" />
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import mdx from "@mdx-js/rollup";
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { playwright } from "@vitest/browser-playwright";
-import remarkFrontmatter from "remark-frontmatter";
-import remarkMdxFrontmatter from "remark-mdx-frontmatter";
-import rehypeStarryNight from "rehype-starry-night";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  plugins: [
-    {
-      ...mdx({
-        jsxImportSource: "react",
-        remarkPlugins: [
-          remarkFrontmatter,
-          [remarkMdxFrontmatter, { name: "matter" }],
-        ],
-        rehypePlugins: [rehypeStarryNight],
-      }),
-      enforce: "pre",
-    },
-    react(),
-  ],
   resolve: {
     alias: {
       "@": path.resolve(dirname, "src"),

@@ -1,0 +1,21 @@
+---
+import { PageContainer } from "@/components/layout";
+import { TextBody, TextEyebrow, TextHeading } from "@/components/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Not found" noindex>
+  <PageContainer>
+    <TextEyebrow>404</TextEyebrow>
+    <TextHeading as="h1" className="mt-2">Not found</TextHeading>
+    <TextBody className="mt-3">
+      We could not find that page. Return to{" "}
+      <a href="/" class="text-primary underline-offset-4 hover:underline">home</a
+      > or browse{" "}
+      <a
+        href="/articles"
+        class="text-primary underline-offset-4 hover:underline">all articles</a
+      >.
+    </TextBody>
+  </PageContainer>
+</BaseLayout>

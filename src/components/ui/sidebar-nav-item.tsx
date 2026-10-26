@@ -1,12 +1,11 @@
 import { type ReactNode } from "react";
-import { Link, useMatch } from "react-router-dom";
 import { cn } from "@/lib/cn";
 
 export type SidebarNavItemProps = {
   to: string;
   icon?: ReactNode;
   children: React.ReactNode;
-  end?: boolean;
+  active?: boolean;
   onNavigate?: () => void;
   /** Notion-style rail: no icon tile, uppercase labels. Default keeps icon chip for Storybook / dense UIs. */
   appearance?: "default" | "minimal";
@@ -16,17 +15,16 @@ export function SidebarNavItem({
   to,
   icon,
   children,
-  end,
+  active = false,
   onNavigate,
   appearance = "default",
 }: SidebarNavItemProps) {
-  const match = useMatch({ path: to, end: end ?? to === "/" });
-  const active = !!match;
   const minimal = appearance === "minimal";
 
   return (
-    <Link
-      to={to}
+    <a
+      href={to}
+      aria-current={active ? "page" : undefined}
       onClick={onNavigate}
       className={cn(
         "flex items-center rounded-md px-3 py-2 font-medium transition-colors",
@@ -67,6 +65,6 @@ export function SidebarNavItem({
         )
       ) : null}
       <span>{children}</span>
-    </Link>
+    </a>
   );
 }
