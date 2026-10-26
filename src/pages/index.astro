@@ -1,0 +1,91 @@
+---
+import { PageContainer } from "@/components/layout";
+import { ArticleCard } from "@/components/ui/article-card";
+import { TextBody, TextEyebrow, TextHeading, TextMuted } from "@/components/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPublishedPosts, toPostMeta } from "@/lib/posts";
+import { SITE } from "@/lib/site";
+
+const sorted = (await getPublishedPosts()).map(toPostMeta);
+const featured = sorted.find((p) => p.featured) ?? sorted[0];
+const recent = sorted.filter((p) => p.slug !== featured?.slug).slice(0, 6);
+
+const site = Astro.site ?? new URL("https://raysonlim.com");
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE.name,
+    url: site.href,
+    description: SITE.description,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: SITE.author,
+    url: site.href,
+    jobTitle: "Software Engineer",
+    sameAs: [SITE.links.github, SITE.links.linkedin],
+  },
+];
+---
+
+<BaseLayout jsonLd={jsonLd}>
+  <PageContainer>
+    <TextEyebrow>Home</TextEyebrow>
+    <TextHeading as="h1" className="mt-2">
+      Records of my{" "}
+      <span class="text-primary inline dark:text-primary-400">learnings</span>{
+        " "
+      }
+      <br /> for the future me.
+    </TextHeading>
+    <TextBody className="mt-3 max-w-2xl text-neutral-600 dark:text-neutral-400">
+      Welcome to my personal site! I am using this space to document my side
+      projects and experimentation so that I can <s>brag</s> look back on the things
+      I have done next time. Of course, this will double as my portfolio page! Feel
+      free to look around. It would make me very happy if my work happens to help
+      someone :)
+    </TextBody>
+
+    {
+      featured && (
+        <section class="mt-10">
+          <div class="mb-4 flex items-center justify-between">
+            <TextHeading as="h3">Featured entry</TextHeading>
+            <a
+              href="/articles"
+              class="link-accent text-sm font-medium underline-offset-4 hover:underline"
+            >
+              View all articles
+            </a>
+          </div>
+          <ArticleCard post={featured} layout="horizontal" />
+        </section>
+      )
+    }
+
+    <section class="mt-10">
+      <div class="mb-4 flex items-center justify-between">
+        <TextHeading as="h3">Recent entries</TextHeading>
+        <TextMuted>
+          {sorted.length} published {sorted.length === 1 ? "post" : "posts"}
+        </TextMuted>
+      </div>
+
+      {
+        recent.length > 0 ? (
+          <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {recent.map((post) => (
+              <ArticleCard post={post} />
+            ))}
+          </div>
+        ) : featured ? (
+          <TextMuted>Only one article is published right now.</TextMuted>
+        ) : (
+          <TextMuted>No published articles yet.</TextMuted>
+        )
+      }
+    </section>
+  </PageContainer>
+</BaseLayout>

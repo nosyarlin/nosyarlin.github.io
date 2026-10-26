@@ -1,26 +1,30 @@
+import { readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-type PostMatter = {
-  slug?: unknown;
-};
+const postsDir = path.resolve(import.meta.dirname, "../../content/posts");
 
-const postMatters = import.meta.glob("../../content/posts/*.mdx", {
-  eager: true,
-  import: "matter",
-}) as Record<string, PostMatter>;
+function readSlug(filePath: string): string | null {
+  const source = readFileSync(filePath, "utf8");
+  const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? "";
+  const slug = frontmatter.match(/^slug:\s*["']?(.+?)["']?\s*$/m)?.[1];
+  return slug?.trim() || null;
+}
 
 describe("post slugs", () => {
   it("ensures every post has a unique slug", () => {
     const slugToFiles = new Map<string, string[]>();
 
-    Object.entries(postMatters).forEach(([filePath, matter]) => {
-      if (typeof matter.slug !== "string" || !matter.slug.trim()) return;
+    readdirSync(postsDir)
+      .filter((file) => file.endsWith(".mdx"))
+      .forEach((file) => {
+        const slug = readSlug(path.join(postsDir, file));
+        if (!slug) return;
 
-      const slug = matter.slug.trim();
-      const files = slugToFiles.get(slug) ?? [];
-      files.push(filePath);
-      slugToFiles.set(slug, files);
-    });
+        const files = slugToFiles.get(slug) ?? [];
+        files.push(file);
+        slugToFiles.set(slug, files);
+      });
 
     const duplicates = Array.from(slugToFiles.entries()).filter(
       ([, files]) => files.length > 1,

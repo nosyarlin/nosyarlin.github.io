@@ -33,11 +33,8 @@ export function ProjectCard({
         <img
           src={fallbackSrc}
           alt={imageAlt}
+          loading="lazy"
           className="h-44 w-full object-cover"
-          onError={(e) => {
-            const el = e.currentTarget;
-            el.style.display = "none";
-          }}
         />
       </picture>
       <CardBody className="flex flex-1 flex-col gap-3">

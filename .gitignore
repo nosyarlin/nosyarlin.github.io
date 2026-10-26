@@ -10,3 +10,5 @@ storybook-static
 
 *storybook.log
 storybook-static
+.astro
+.serena
